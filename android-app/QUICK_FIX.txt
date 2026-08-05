@@ -1,0 +1,40 @@
+QUICK FIX FOR LOGO ISSUE
+========================
+
+The logo file has wrong name: wmm-logo.png.png
+
+STEP 1: Rename the file
+-----------------------
+Location: android-app\app\src\main\assets\
+
+Rename from: wmm-logo.png.png
+Rename to:   wmm-logo.png
+
+STEP 2: Update HTML file
+-------------------------
+In file: android-app\app\src\main\assets\Wm_B.html
+
+Change all occurrences of:
+  src="wmm-logo.png.png"
+To:
+  src="wmm-logo.png"
+
+(There are 3 places to change)
+
+STEP 3: Rebuild
+---------------
+cd android-app
+.\gradlew assembleDebug
+
+DONE! Logo will now show in:
+- App header (white bar at top)
+- Bill template preview
+- Generated invoices
+
+YOUR MEDICINES DATA
+===================
+File: medicines-ready-to-import.json
+This is your real medicine data (17 medicines) ready to import!
+
+Copy to your phone and import via:
+Configure → Medicine Catalogue → Import JSON

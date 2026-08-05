@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Paracetamol 500mg",
+    "price": 5
+  },
+  {
+    "name": "Amoxicillin 250mg",
+    "price": 45
+  },
+  {
+    "name": "Cetirizine 10mg",
+    "price": 8
+  },
+  {
+    "name": "Ibuprofen 400mg",
+    "price": 12
+  },
+  {
+    "name": "Omeprazole 20mg",
+    "price": 15
+  }
+]

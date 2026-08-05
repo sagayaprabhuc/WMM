@@ -1,0 +1,64 @@
+[
+  {
+    "invoiceNo": "26004",
+    "date": "2026-03-24",
+    "billTo": "Dr.D's Dentistry",
+    "payMode": "Cash",
+    "items": [
+      {
+        "name": "pantosec 40",
+        "qty": 2,
+        "price": 97,
+        "amount": 194
+      },
+      {
+        "name": "Aldegesic SP",
+        "qty": 3,
+        "price": 80,
+        "amount": 240
+      },
+      {
+        "name": "Metrogyl",
+        "qty": 2,
+        "price": 14,
+        "amount": 28
+      }
+    ],
+    "sub": 462,
+    "discAmt": 0,
+    "gst": 55.44,
+    "total": 517.44,
+    "disc": 0
+  },
+  {
+    "invoiceNo": "26005",
+    "date": "2026-03-25",
+    "billTo": "Dr.D's Dentistry",
+    "payMode": "Cash",
+    "items": [
+      {
+        "name": "Aldigesic SP",
+        "qty": 1,
+        "price": 80,
+        "amount": 80
+      },
+      {
+        "name": "Pantosec 40",
+        "qty": 1,
+        "price": 97,
+        "amount": 97
+      },
+      {
+        "name": "ShyNM Paste",
+        "qty": 1,
+        "price": 167,
+        "amount": 167
+      }
+    ],
+    "sub": 344,
+    "discAmt": 0,
+    "gst": 41.28,
+    "total": 385.28,
+    "disc": 0
+  }
+]

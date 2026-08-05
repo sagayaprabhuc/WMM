@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a6b3c">
+<title>Wilfred Madinaa Medicals</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a6b3c;
+  --primary-dark: #145430;
+  --primary-light: #e8f5ee;
+  --primary-mid: #2d9b5f;
+  --accent: #f59e0b;
+  --accent-dark: #d97706;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --white: #ffffff;
+  --bg: #f3f4f6;
+  --card-bg: #ffffff;
+  --red: #ef4444;
+  --red-light: #fef2f2;
+  --success: #10b981;
+  --nav-height: 64px;
+  --header-height: 60px;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+/* ── APP SHELL ── */
+.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
+
+/* ── HEADER ── */
+.app-header {
+  background: var(--primary);
+  height: var(--header-height);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(26,107,60,0.25);
+  z-index: 10;
+}
+.header-brand { display: flex; align-items: center; gap: 10px; }
+.header-icon { width: 34px; height: 34px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.header-title { color: white; }
+.header-title h1 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; line-height: 1.2; }
+.header-title p { font-size: 0.65rem; opacity: 0.75; margin-top: 1px; }
+.header-action { background: rgba(255,255,255,0.15); border: none; border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; }
+
+/* ── SCROLLABLE CONTENT ── */
+.app-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(var(--nav-height) + 16px); }
+
+/* ── TAB PAGES ── */
+.tab-page { display: none; padding: 16px; }
+.tab-page.active { display: block; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: white;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: stretch;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  z-index: 100;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; border: none; background: none; cursor: pointer;
+  color: var(--text-secondary); font-size: 0.62rem; font-weight: 500;
+  font-family: 'Inter', sans-serif; padding: 8px 4px; transition: color 0.2s;
+  position: relative;
+}
+.nav-item.active { color: var(--primary); }
+.nav-item.active::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 3px; background: var(--primary); border-radius: 0 0 3px 3px; }
+.nav-icon { font-size: 20px; line-height: 1; }
+.nav-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── CARDS ── */
+.card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-bottom: 12px; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title { font-size: 0.88rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+
+/* ── FORM ELEMENTS ── */
+.form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.form-group:last-child { margin-bottom: 0; }
+label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+input, select, textarea {
+  padding: 11px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text);
+  background: white; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+  -webkit-appearance: none; appearance: none;
+}
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,107,60,0.1); }
+input::placeholder { color: #d1d5db; }
+
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+/* ── BUTTONS ── */
+.btn { padding: 11px 18px; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:active { background: var(--primary-dark); transform: scale(0.98); }
+.btn-outline { background: white; color: var(--primary); border: 1.5px solid var(--primary); }
+.btn-outline:active { background: var(--primary-light); }
+.btn-accent { background: var(--accent); color: white; }
+.btn-accent:active { background: var(--accent-dark); }
+.btn-danger { background: var(--red-light); color: var(--red); border: 1.5px solid #fecaca; }
+.btn-ghost { background: #f9fafb; color: var(--text-secondary); border: 1.5px solid var(--border); }
+.btn-sm { padding: 7px 12px; font-size: 0.78rem; border-radius: 6px; }
+.btn-xs { padding: 4px 9px; font-size: 0.72rem; border-radius: 5px; font-weight: 600; }
+.btn-full { width: 100%; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+/* ── GENERATE BILL BUTTON ── */
+.generate-bar { position: sticky; bottom: calc(var(--nav-height) + 8px); left: 0; right: 0; padding: 0 0 4px; z-index: 20; pointer-events: none; }
+.generate-bar .btn { pointer-events: all; box-shadow: 0 4px 16px rgba(26,107,60,0.35); }
+
+/* ── MEDICINE ITEMS TABLE ── */
+.items-table { width: 100%; }
+.items-thead { display: grid; grid-template-columns: 1fr 52px 72px 36px; gap: 6px; padding: 6px 0; border-bottom: 2px solid var(--primary-light); margin-bottom: 4px; }
+.items-thead span { font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; }
+.items-thead span:nth-child(2), .items-thead span:nth-child(3) { text-align: center; }
+.item-row { display: grid; grid-template-columns: 1fr 52px 72px 36px; gap: 6px; align-items: center; padding: 5px 0; border-bottom: 1px solid #f9fafb; }
+.item-row input { padding: 8px 10px; font-size: 0.85rem; border-radius: 6px; text-align: center; }
+.item-row input:first-child { text-align: left; }
+.remove-btn { width: 32px; height: 32px; background: none; border: none; cursor: pointer; color: #d1d5db; font-size: 16px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.remove-btn:active { background: var(--red-light); color: var(--red); }
+#items-list { min-height: 40px; }
+
+/* ── TOTALS BOX ── */
+.totals-box { background: var(--primary-light); border-radius: 10px; padding: 14px; margin-top: 12px; }
+.totals-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.88rem; }
+.totals-row.grand { font-size: 1.05rem; font-weight: 700; color: var(--primary); border-top: 2px solid var(--primary-mid); margin-top: 8px; padding-top: 10px; }
+.discount-input { width: 60px; padding: 4px 6px; font-size: 0.85rem; border-radius: 6px; text-align: center; }
+
+/* ── BADGE / CHIP ── */
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+.badge-green { background: #d1fae5; color: #065f46; }
+.badge-blue { background: #dbeafe; color: #1d4ed8; }
+.badge-amber { background: #fef3c7; color: #92400e; }
+
+/* ── STATS GRID ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.stat-card { background: white; border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
+.stat-card .val { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary); line-height: 1.2; }
+.stat-card .lbl { font-size: 0.72rem; color: var(--text-secondary); margin-top: 3px; font-weight: 500; }
+.stat-card .trend { font-size: 0.7rem; color: var(--success); margin-top: 2px; }
+
+/* ── HISTORY TABLE ── */
+.history-list { }
+.history-item { background: white; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.history-item-left { flex: 1; min-width: 0; }
+.history-item-name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-item-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+.history-item-right { text-align: right; flex-shrink: 0; }
+.history-item-amount { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+.history-item-date { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
+.history-item-actions { display: flex; gap: 4px; margin-top: 8px; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 36px 20px; color: var(--text-secondary); }
+.empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.empty-state p { font-size: 0.85rem; line-height: 1.6; }
+
+/* ── CONFIG SECTIONS ── */
+.config-section { background: white; border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.config-section-header { padding: 14px 16px; background: var(--primary-light); display: flex; align-items: center; justify-content: space-between; }
+.config-section-header h3 { font-size: 0.88rem; font-weight: 600; color: var(--primary); }
+.config-section-body { padding: 14px 16px; }
+.config-section-footer { padding: 10px 16px; background: #fafafa; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ── MEDICINE LIST ── */
+.med-item { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #f9fafb; }
+.med-item:last-child { border-bottom: none; }
+.med-item-name { flex: 1; font-size: 0.88rem; font-weight: 500; }
+.med-item-price { font-size: 0.85rem; color: var(--primary); font-weight: 600; min-width: 64px; text-align: right; }
+.med-item-actions { display: flex; gap: 4px; }
+.med-name-input, .med-price-input { padding: 5px 8px; font-size: 0.85rem; border: 1.5px solid var(--border); border-radius: 6px; }
+.med-price-input { width: 70px; }
+.med-list-scroll { max-height: 320px; overflow-y: auto; }
+
+/* ── CUSTOMER LIST ── */
+.cust-item { padding: 10px 0; border-bottom: 1px solid #f9fafb; }
+.cust-item:last-child { border-bottom: none; }
+.cust-item-view { display: flex; align-items: flex-start; justify-content: space-between; }
+.cust-name { font-weight: 600; font-size: 0.88rem; }
+.cust-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+.cust-item-edit { display: none; flex-direction: column; gap: 6px; padding-top: 6px; }
+.cust-item.editing .cust-item-view { display: none; }
+.cust-item.editing .cust-item-edit { display: flex; }
+.cust-edit-input { padding: 8px 10px; font-size: 0.84rem; border: 1.5px solid var(--border); border-radius: 6px; width: 100%; }
+.cust-list-scroll { max-height: 320px; overflow-y: auto; }
+
+/* ── AUTOCOMPLETE ── */
+.med-name-wrap { position: relative; }
+.med-name-suggestions { position: absolute; top: 100%; left: 0; right: 0; z-index: 300; background: white; border: 1.5px solid var(--primary); border-top: none; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto; box-shadow: var(--shadow-md); display: none; }
+.med-name-suggestions.open { display: block; }
+.med-name-suggestion { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; cursor: pointer; font-size: 0.85rem; border-bottom: 1px solid #f9fafb; transition: background 0.1s; }
+.med-name-suggestion:last-child { border-bottom: none; }
+.med-name-suggestion:hover, .med-name-suggestion.active { background: var(--primary-light); }
+.sug-med-name { font-weight: 500; }
+.sug-med-price { font-size: 0.78rem; color: var(--primary); font-weight: 600; }
+.bill-to-wrap { position: relative; }
+.bill-to-suggestions { position: absolute; top: 100%; left: 0; right: 0; z-index: 200; background: white; border: 1.5px solid var(--primary); border-top: none; border-radius: 0 0 8px 8px; max-height: 180px; overflow-y: auto; box-shadow: var(--shadow-md); display: none; }
+.bill-to-suggestions.open { display: block; }
+.bill-to-suggestion { padding: 10px 12px; cursor: pointer; font-size: 0.88rem; border-bottom: 1px solid #f9fafb; transition: background 0.1s; }
+.bill-to-suggestion:last-child { border-bottom: none; }
+.bill-to-suggestion:hover, .bill-to-suggestion.active { background: var(--primary-light); }
+.sug-name { font-weight: 600; }
+.sug-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+
+/* ── INVOICE PREVIEW ── */
+#invoice-preview { display: none; background: white; border-radius: var(--radius); padding: 20px 16px; box-shadow: var(--shadow); margin-top: 12px; font-family: 'Inter', sans-serif; position: relative; overflow: hidden; }
+.inv-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 55%; pointer-events: none; z-index: 0; opacity: 0.06; }
+.inv-watermark img { width: 100%; height: auto; display: block; }
+#invoice-preview > *:not(.inv-watermark) { position: relative; z-index: 1; }
+.inv-header { display: flex; justify-content: flex-start; align-items: flex-end; padding-bottom: 12px; border-bottom: 2px solid var(--primary); margin-bottom: 0; }
+.inv-shop p { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.6; margin-top: 5px; }
+.inv-bill-row { display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid var(--border); border-top: none; margin-bottom: 0; }
+.inv-bill-left { padding: 10px 12px; flex: 1; border-right: 1px solid var(--border); }
+.inv-bill-right { padding: 10px 12px; min-width: 180px; }
+.inv-section-label { font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.inv-bill-name { font-size: 0.88rem; font-weight: 600; }
+.inv-detail-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 1px 0; }
+.inv-detail-row span:first-child { color: var(--text-secondary); }
+.inv-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-top: none; }
+.inv-table thead tr { background: var(--primary); }
+.inv-table th { color: white; padding: 8px 10px; font-size: 0.72rem; font-weight: 600; text-align: left; }
+.inv-table th:not(:first-child) { text-align: right; }
+.inv-table th:nth-child(2) { text-align: left; }
+.inv-table td { padding: 7px 10px; font-size: 0.82rem; border-bottom: 1px solid #f3f4f6; }
+.inv-table td:not(:first-child):not(:nth-child(2)) { text-align: right; }
+.inv-table tr:last-child td { border-bottom: none; }
+.inv-table .inv-total-row td { font-weight: 700; background: var(--primary-light); border-top: 2px solid var(--primary); font-size: 0.82rem; }
+.inv-bottom { display: flex; border: 1px solid var(--border); border-top: none; }
+.inv-words-col { flex: 1; padding: 10px 12px; border-right: 1px solid var(--border); }
+.inv-words-label { font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.inv-words-text { font-size: 0.78rem; color: var(--text); line-height: 1.4; }
+.inv-totals-col { min-width: 180px; padding: 10px 12px; }
+.inv-totals-row { display: flex; justify-content: space-between; padding: 2px 0; font-size: 0.8rem; }
+.inv-totals-row.inv-balance { font-weight: 700; font-size: 0.85rem; color: var(--primary); border-top: 1.5px solid var(--primary); margin-top: 4px; padding-top: 6px; }
+.inv-footer-row { display: flex; justify-content: space-between; align-items: flex-end; border: 1px solid var(--border); border-top: none; padding: 10px 12px; }
+.inv-footer-left { font-size: 0.76rem; color: var(--text-secondary); }
+.inv-footer-left strong { color: var(--text); display: block; margin-bottom: 2px; }
+.inv-sig { text-align: right; font-size: 0.76rem; }
+.inv-sig .sig-line { border-top: 1px solid var(--text); width: 140px; margin-left: auto; margin-bottom: 4px; margin-top: 28px; }
+.inv-sig .sig-name { font-weight: 600; font-size: 0.8rem; }
+.inv-sig .sig-sub { color: var(--text-secondary); font-size: 0.7rem; margin-top: 1px; }
+
+/* ── TEMPLATE PREVIEW ── */
+.tpl-preview { font-size: 0.75rem; border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: #fefefe; }
+.tpl-preview .tpl-shop-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--primary); }
+.tpl-preview .tpl-addr { color: var(--text-secondary); font-size: 0.68rem; line-height: 1.6; margin-top: 2px; }
+.tpl-preview .tpl-badge { display: inline-block; background: var(--primary); color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.8px; margin: 7px 0; }
+.tpl-preview .tpl-divider { border: none; border-top: 2px solid var(--primary); margin: 6px 0; }
+.tpl-preview .tpl-row { display: flex; justify-content: space-between; font-size: 0.68rem; padding: 2px 0; }
+.tpl-preview .tpl-footer-msg { color: var(--text-secondary); font-size: 0.66rem; margin-top: 7px; font-style: italic; }
+
+/* ── MODAL ── */
+.modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end; justify-content: center; }
+.modal-backdrop.open { display: flex; }
+.modal { background: white; border-radius: 20px 20px 0 0; padding: 24px 20px 32px; width: 100%; max-width: 520px; box-shadow: 0 -8px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+.modal-handle { width: 36px; height: 4px; background: #e5e7eb; border-radius: 2px; margin: 0 auto 18px; }
+.modal h3 { font-family: 'Playfair Display', serif; color: var(--primary); font-size: 1.1rem; margin-bottom: 16px; }
+.modal .form-group { margin-bottom: 12px; }
+.modal .btn-row { margin-top: 20px; }
+
+/* ── LOG PANEL ── */
+.log-entry { padding: 6px 0; border-bottom: 1px solid #f3f4f6; line-height: 1.5; }
+.log-entry:last-child { border-bottom: none; }
+.log-ts { color: #9ca3af; margin-right: 6px; font-size: 0.72rem; }
+.log-msg { color: var(--text); font-size: 0.78rem; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: calc(var(--nav-height) + 12px); left: 50%; transform: translateX(-50%); background: #1f2937; color: white; padding: 10px 18px; border-radius: 24px; font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.25s; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; }
+
+/* ── SECTION DIVIDER ── */
+.section-label { font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.6px; padding: 4px 0 8px; }
+
+/* ── FOLDER PICKER ── */
+.folder-picker-area { border: 2px dashed var(--border); border-radius: 10px; padding: 24px 20px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.folder-picker-area:hover { border-color: var(--primary); background: var(--primary-light); }
+.folder-picker-area .fp-icon { font-size: 2rem; margin-bottom: 8px; }
+.folder-picker-area p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px; }
+.folder-path-display { background: #f3f4f6; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: var(--text-secondary); word-break: break-all; border: 1px solid var(--border); margin-top: 10px; display: none; }
+.folder-path-display.active { display: block; color: var(--primary); font-weight: 500; }
+.settings-info { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.7; margin-top: 12px; padding-left: 16px; }
+
+/* ── ADD FORM ── */
+.add-form-box { background: var(--primary-light); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+.add-form-box .add-form-title { font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.add-form-grid { display: grid; grid-template-columns: 1fr 90px; gap: 8px; align-items: end; }
+
+/* ── PRINT ── */
+@media print {
+  @page { margin: 10mm; size: A4; }
+  html, body { height: auto !important; overflow: visible !important; }
+  body * { visibility: hidden; }
+  #invoice-preview, #invoice-preview * { visibility: visible; }
+  #invoice-preview { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; margin: 0 !important; padding: 14px !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; display: block !important; }
+  .no-print { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="header-icon">💊</div>
+      <div class="header-title">
+        <h1>Wilfred Madinaa Medicals</h1>
+        <p>No:-38/365, Triplicane, Chennai-600005</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- SCROLLABLE CONTENT -->
+  <div class="app-content" id="app-content">
+
+    <!-- BILLING TAB -->
+    <div class="tab-page active" id="tab-billing">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🧾 Bill Details</div>
+        </div>
+        <div class="form-group">
+          <label>Bill To</label>
+          <div class="bill-to-wrap">
+            <input type="text" id="bill-to" placeholder="Customer / Doctor name" value="Dr.D's Dentistry"
+              autocomplete="off" oninput="onBillToInput()" onkeydown="onBillToKey(event)" onblur="hideSuggestions()">
+            <div class="bill-to-suggestions" id="bill-to-suggestions"></div>
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label>Invoice No.</label>
+            <input type="text" id="invoice-no" placeholder="25">
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="invoice-date">
+          </div>
+          <div class="form-group">
+            <label>Payment</label>
+            <select id="pay-mode">
+              <option>Cash</option>
+              <option>UPI</option>
+              <option>Card</option>
+              <option>Credit</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">💊 Medicines</div>
+          <button class="btn btn-outline btn-sm" onclick="addItem()">+ Add</button>
+        </div>
+        <div class="items-table">
+          <div class="items-thead">
+            <span>Name</span>
+            <span style="text-align:center">Qty</span>
+            <span style="text-align:right">Amt (₹)</span>
+            <span></span>
+          </div>
+          <div id="items-list"></div>
+        </div>
+
+        <div class="totals-box">
+          <div class="totals-row"><span>Subtotal</span><span id="subtotal">₹ 0.00</span></div>
+          <div class="totals-row">
+            <span>Discount (%)</span>
+            <input type="number" id="discount" value="0" min="0" max="100" class="discount-input" oninput="calcTotal()">
+          </div>
+          <div class="totals-row grand"><span>TOTAL</span><span id="grand-total">₹ 0.00</span></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary btn-full" onclick="generateBill()" style="flex:2">🖨 Generate Bill</button>
+          <button class="btn btn-ghost btn-sm" onclick="resetForm()">↺ Reset</button>
+        </div>
+      </div>
+
+      <div id="invoice-preview">
+        <div class="inv-watermark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAXgAklEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a9mJlddddVVV1111VVXXXXVVVddddVVV/1fIEDiAYyp/BuJ58NcddVVV1111VVXXXXVVVddddVVV13138oGkMCAjCv/Ruaqq6666qqrrrrqqquuuuqqq6666qr/sQyAwFSuuuqqq6666qqrrrrqqquuuuqqq676v8oAwVVXXXXVVVddddVVV1111VVXXXXVVf9XCUFw1VVXXXXVVVddddVVV1111VVXXXXV/2UEV1111VVXXXXVVVddddVVV1111VVX/R9h7mcwYEDBVVddddVVV1111VVXXXXVVVddddVV/5cRXHXVVVddddVVV1111VVXXXXVVVdd9X+HwdzPAK5cddVVV1111VVXXXXVVVddddVVV131f425nyG46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquu+j9CPH/iqquuuuqqq6666v81KlddddVVV1111VX/R5j7iX+ReDbznMxzEP9q5qqrrrrqqquuuup/DipXXXXVVVddddVV/2cYY8A8i0Fg/kUGAAxgnk0AIF4Qm38VgXk2AeIBxP1kW5Iknk1gnk1grrrqqquuuuqqq14YlJlcddVVV1111VVX/S9nAASSbMD8H5KZQERwhYQBAyAwV1111VVXXXXVVS8Mlauuuuqqq6666qr/zQwCgWDcO7jwpKd2m3NCbthgwLLAONPptJ0Y24BtMLYznemWtoURgAFJBJIUCCQJDLadGBsJSYCFkSQUkiQhCcAG0mCQhEIIJCQppEACKYSQQuBpWB0tr3mxR9etTcC2AAkbBOKqq6666qqrrrrqRULlqquuuuqqq6666n8nAyAgc/fpdz3lp372L7/ruy8++QmlbqBQa8KWEgyJbRsbMIAEGJANAgQCwIBtAISQhBCWbYwNGGGbywwIJIQkBRECIQQyYMA2CGMkAyWkIpVAkhACMNgKaKv18qaXe7mHvf7rPOTN3uTal3qsasczGcRVV1111VVXXXXViwRlJlddddVVV1111VX/2xgEwO7f/t0ffP6XPOEXf+Po6FyhLGIhMBiMTYIMFoDBPJtsCSFBSJIAIQmQBcZgYzuFsQEB4jKDEEIgAGQHyAiDxRXifgZjwIAxADZgwMjCgARKO9v6yNNivvnQ13ntV/2Ej3nwa746ETYSgCTbXHXVVVddddVVV70wKDO56qqrrrrqqquu+l/FIGgHB3/yuV/2R9/07avD+zr181hgKgTmssQGi8SAeW4CCTDmfhJYgMAgJMBgnGBssLlCyICQERYAAhkJYfEABrDEZcZIApAACQFYJCAwaYzsGNq4ysOYz17ind/7jT//Uzeuv95GQsiYq6666qqrrrrqqhcGZSZXXXXVVVddddVV/9t4PXz3G7/9E/7gN2dl3pxdTgvTQU/pcCklTEAmU2GSE8k8lzAhwiZAhFUgEDYCgQEsErAwKTcZWwASKIAwGGQs7idsMBjAGAyGZiwnBmRksBFCIGSbxA1spEinJKEAbNlHqEZZ5Xp27OR7/dxPXvMqLw+AADBXXXXVVVddddVVzweVq6666qqrrrrqv5UBEP/+x3zuT37L1+5qb1dJHc7a1dJUkIiYQAoTlTiAGYC4n4AAAMYAAON+5gIjYwAAAe9cJoC4m4CQDmAAAGt3AAAAAElFTkSuQmCC" alt="WMM"></div>
+
+        <!-- Row 1: Shop info -->
+        <div class="inv-header">
+          <div class="inv-shop">
+            <img id="tpl-disp-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAXgAklEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a9mJlddddVVV1111VVXXXXVVVddddVVV/1fIEDiAYyp/BuJ58NcddVVV1111VVXXXXVVVddddVVV13138oGkMCAjCv/Ruaqq6666qqrrrrqqquuuuqqq6666qr/sQyAwFSuuuqqq6666qqrrrrqqquuuuqqq676v8oAwVVXXXXVVVddddVVV1111VVXXXXVVf9XCUFw1VVXXXXVVVddddVVV1111VVXXXXV/2UEV1111VVXXXXVVVddddVVV1111VVX/R9h7mcwYEDBVVddddVVV1111VVXXXXVVVddddVV/5cRXHXVVVddddVVV1111VVXXXXVVVdd9X+HwdzPAK5cddVVV1111VVXXXXVVVddddVVV131f425nyG46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquu+j9CPH/iqquuuuqqq6666v81KlddddVVV1111VX/R5j7iX+ReDbznMxzEP9q5qqrrrrqqquuuup/DipXXXXVVVddddVV/2cYY8A8i0Fg/kUGAAxgnk0AIF4Qm38VgXk2AeIBxP1kW5Iknk1gnk1grrrqqquuuuqqq14YlJlcddVVV1111VVX/S9nAASSbMD8H5KZQERwhYQBAyAwV1111VVXXXXVVS8Mlauuuuqqq6666qr/zQwCgWDcO7jwpKd2m3NCbthgwLLAONPptJ0Y24BtMLYznemWtoURgAFJBJIUCCQJDLadGBsJSYCFkSQUkiQhCcAG0mCQhEIIJCQppEACKYSQQuBpWB0tr3mxR9etTcC2AAkbBOKqq6666qqrrrrqRULlqquuuuqqq6666n8nAyAgc/fpdz3lp372L7/ruy8++QmlbqBQa8KWEgyJbRsbMIAEGJANAgQCwIBtAISQhBCWbYwNGGGbywwIJIQkBRECIQQyYMA2CGMkAyWkIpVAkhACMNgKaKv18qaXe7mHvf7rPOTN3uTal3qsasczGcRVV1111VVXXXXViwRlJlddddVVV1111VX/2xgEwO7f/t0ffP6XPOEXf+Po6FyhLGIhMBiMTYIMFoDBPJtsCSFBSJIAIQmQBcZgYzuFsQEB4jKDEEIgAGQHyAiDxRXifgZjwIAxADZgwMjCgARKO9v6yNNivvnQ13ntV/2Ej3nwa746ETYSgCTbXHXVVVddddVVV70wKDO56qqrrrrqqquu+l/FIGgHB3/yuV/2R9/07avD+zr181hgKgTmssQGi8SAeW4CCTDmfhJYgMAgJMBgnGBssLlCyICQERYAAhkJYfEABrDEZcZIApAACQFYJCAwaYzsGNq4ysOYz17ind/7jT//Uzeuv95GQsiYq6666qqrrrrqqhcGZSZXXXXVVVddddVV/9t4PXz3G7/9E/7gN2dl3pxdTgvTQU/pcCklTEAmU2GSE8k8lzAhwiZAhFUgEDYCgQEsErAwKTcZWwASKIAwGGQs7idsMBjAGAyGZiwnBmRksBFCIGSbxA1spEinJKEAbNlHqEZZ5Xp27OR7/dxPXvMqLw+AADBXXXXVVVddddVVzweVq6666qqrrrrqvxUA" alt="Wilfred Madinaa Medicals" style="height:60px;width:auto;display:block;">
+            <p id="tpl-disp-addr">No:-38/365, Avai Shanmugam Salai,<br>Triplicane, Chennai-600005<br>Phone: 7299999392<br>Email: wilfredmadinaamedicals@gmail.com</p>
+          </div>
+        </div>
+
+        <!-- Row 2: Bill To + Invoice Details -->
+        <div class="inv-bill-row">
+          <div class="inv-bill-left">
+            <div class="inv-section-label">Bill To</div>
+            <div class="inv-bill-name" id="p-bill-to"></div>
+          </div>
+          <div class="inv-bill-right">
+            <div class="inv-section-label">Invoice Details</div>
+            <div class="inv-detail-row"><span>Invoice No.</span><span>: <strong id="p-inv-no"></strong></span></div>
+            <div class="inv-detail-row"><span>Date</span><span>: <strong id="p-date"></strong></span></div>
+          </div>
+        </div>
+
+        <!-- Row 3: Items table -->
+        <table class="inv-table">
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th>Medicine Name</th>
+              <th style="width:60px;text-align:right">Qty</th>
+              <th style="width:100px;text-align:right">Unit Price</th>
+              <th style="width:100px;text-align:right">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="p-items"></tbody>
+          <tfoot>
+            <tr class="inv-total-row">
+              <td></td><td>Total</td>
+              <td style="text-align:right" id="p-total-qty"></td>
+              <td></td>
+              <td style="text-align:right" id="p-total-amt"></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Row 4: Words + Totals -->
+        <div class="inv-bottom">
+          <div class="inv-words-col">
+            <div class="inv-words-label">Invoice Amount In Words</div>
+            <div class="inv-words-text" id="p-words"></div>
+          </div>
+          <div class="inv-totals-col">
+            <div class="inv-totals-row"><span>Sub Total</span><span id="p-sub"></span></div>
+            <div class="inv-totals-row"><span>Received</span><span id="p-received">₹ 0.00</span></div>
+            <div class="inv-totals-row inv-balance"><span>Balance</span><span id="p-balance"></span></div>
+          </div>
+        </div>
+
+        <!-- Row 5: Terms + Signature -->
+        <div class="inv-footer-row">
+          <div class="inv-footer-left">
+            <strong>Terms and Conditions</strong>
+            <span id="tpl-disp-tagline">Thanks for doing business with us!</span>
+          </div>
+          <div class="inv-sig">
+            <div class="sig-line"></div>
+            <div class="sig-name">For : <span id="tpl-disp-sig">Wilfred Madinaa Medicals</span></div>
+            <div class="sig-sub">Authorized Signatory</div>
+          </div>
+        </div>
+
+        <div class="btn-row no-print" style="margin-top:16px;">
+          <button class="btn btn-primary" style="flex:1" onclick="printBill()">🖨 Print / PDF</button>
+          <button class="btn btn-accent" style="flex:1" onclick="saveBill()">💾 Save Bill</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('invoice-preview').style.display='none'">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY TAB -->
+    <div class="tab-page" id="tab-history">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 Billing History</div>
+          <button class="btn btn-ghost btn-sm" onclick="exportBills()">⬇ Export</button>
+        </div>
+        <div id="history-content">
+          <div class="empty-state"><div class="empty-icon">📄</div><p>No bills saved yet.<br>Generate a bill and tap "Save Bill".</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🗒 Activity Log</div>
+          <button class="btn btn-danger btn-sm" onclick="clearLogs()">Clear</button>
+        </div>
+        <div id="log-content" style="max-height:220px;overflow-y:auto;">
+          <div class="empty-state" style="padding:20px"><div class="empty-icon" style="font-size:1.5rem">🗒</div><p>No activity yet.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD TAB -->
+    <div class="tab-page" id="tab-dashboard">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="val" id="stat-bills">0</div><div class="lbl">Total Bills</div></div>
+        <div class="stat-card"><div class="val" id="stat-revenue">₹0</div><div class="lbl">Total Revenue</div></div>
+        <div class="stat-card" style="grid-column:1/-1"><div class="val" id="stat-avg">₹0</div><div class="lbl">Avg Bill Value</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Recent Sales</div>
+        <div id="dash-table-wrap" style="margin-top:12px">
+          <div class="empty-state"><div class="empty-icon">📊</div><p>Save some bills to see stats here.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIGURE TAB -->
+    <div class="tab-page" id="tab-configure">
+      <!-- Bill Template -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <h3>📄 Bill Template</h3>
+        </div>
+        <div class="config-section-body">
+          <div class="tpl-preview" id="tpl-preview-box"><!-- rendered by JS --></div>
+        </div>
+        <div class="config-section-footer">
+          <button class="btn btn-outline btn-sm" onclick="openTemplateModal()">✏️ Edit Template</button>
+        </div>
+      </div>
+
+      <!-- Medicine Catalogue -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <h3>💊 Medicine Catalogue</h3>
+          <span style="font-size:0.75rem;color:var(--text-secondary);font-weight:500" id="med-count-badge">0 medicines</span>
+        </div>
+        <div class="config-section-body">
+          <div class="add-form-box">
+            <div class="add-form-title">Add New Medicine</div>
+            <div class="add-form-grid">
+              <div class="form-group" style="margin:0">
+                <label>Name</label>
+                <input type="text" id="new-med-name" placeholder="e.g. Paracetamol 500mg" style="font-size:0.85rem;padding:9px 10px;">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>Price (₹)</label>
+                <input type="number" id="new-med-price" placeholder="0" min="0" step="0.01" style="font-size:0.85rem;padding:9px 10px;">
+              </div>
+            </div>
+            <button class="btn btn-primary btn-full btn-sm" style="margin-top:10px;" onclick="addMedicine()">+ Add Medicine</button>
+          </div>
+          <div class="med-list-scroll" id="med-list"><!-- rendered by JS --></div>
+        </div>
+        <div class="config-section-footer">
+          <button class="btn btn-ghost btn-sm" onclick="exportMedicines()">⬇ Export JSON</button>
+          <label class="btn btn-ghost btn-sm" style="cursor:pointer;margin:0;">
+            ⬆ Import JSON
+            <input type="file" accept=".json" style="display:none" onchange="importMedicines(event)">
+          </label>
+        </div>
+      </div>
+
+      <!-- Customer Directory -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <h3>👤 Customer Directory</h3>
+          <span style="font-size:0.75rem;color:var(--text-secondary);font-weight:500" id="cust-count-badge">0 customers</span>
+        </div>
+        <div class="config-section-body">
+          <div class="add-form-box">
+            <div class="add-form-title">Add New Customer</div>
+            <div class="form-group" style="margin-bottom:8px"><label>Name</label><input type="text" id="new-cust-name" placeholder="e.g. Dr. D's Dentistry" style="font-size:0.85rem;padding:9px 10px;"></div>
+            <div class="form-group-2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+              <div class="form-group" style="margin:0"><label>Phone</label><input type="text" id="new-cust-phone" placeholder="9876543210" style="font-size:0.85rem;padding:9px 10px;"></div>
+              <div class="form-group" style="margin:0"><label>Address</label><input type="text" id="new-cust-addr" placeholder="Chennai" style="font-size:0.85rem;padding:9px 10px;"></div>
+            </div>
+            <button class="btn btn-primary btn-full btn-sm" onclick="addCustomer()">+ Add Customer</button>
+          </div>
+          <div class="cust-list-scroll" id="cust-list"></div>
+        </div>
+        <div class="config-section-footer">
+          <button class="btn btn-ghost btn-sm" onclick="exportCustomers()">⬇ Export JSON</button>
+          <label class="btn btn-ghost btn-sm" style="cursor:pointer;margin:0;">
+            ⬆ Import JSON
+            <input type="file" accept=".json" style="display:none" onchange="importCustomers(event)">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="tab-page" id="tab-settings">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px">⚙️ Data Storage Folder</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:14px;line-height:1.6;">Select a folder on your device where the app will save billing history, medicine data, and logs.</p>
+        <div class="folder-picker-area" id="folder-picker-area" onclick="pickFolder()">
+          <div class="fp-icon">📁</div>
+          <p>Tap to select a folder from your device</p>
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();pickFolder()">Browse Folder</button>
+        </div>
+        <div class="folder-path-display" id="folder-path-display"></div>
+        <ul class="settings-info">
+          <li><strong>billing_history.json</strong> — all saved bills</li>
+          <li><strong>medicines.json</strong> — medicine catalogue</li>
+          <li><strong>app.log</strong> — activity log</li>
+        </ul>
+        <div style="margin-top:14px;display:none" id="folder-actions">
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" onclick="syncToFolder()">→ Sync to Folder</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearFolder()">✕ Clear Folder</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px">ℹ️ About</div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
+          <strong style="color:var(--text)">Wilfred Madinaa Medicals</strong> Billing Software<br>
+          Data is stored in your browser's local storage by default.<br>
+          Select a folder above to also save files on your device.<br><br>
+          <em>Requires Chrome/Edge for folder access.</em>
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /app-content -->
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-billing" onclick="showTab('billing')">
+      <span class="nav-icon">🧾</span>
+      <span>New Bill</span>
+    </button>
+    <button class="nav-item" id="nav-history" onclick="showTab('history')">
+      <span class="nav-icon">📋</span>
+      <span>History</span>
+    </button>
+    <button class="nav-item" id="nav-dashboard" onclick="showTab('dashboard')">
+      <span class="nav-icon">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-item" id="nav-configure" onclick="showTab('configure')">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </span>
+      <span>Configure</span>
+    </button>
+    <button class="nav-item" id="nav-settings" onclick="showTab('settings')">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </span>
+      <span>Settings</span>
+    </button>
+  </nav>
+</div>
+
+<!-- BILL TEMPLATE MODAL -->
+<div class="modal-backdrop" id="tpl-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3>✏️ Edit Bill Template</h3>
+    <div class="form-group"><label>Shop / Business Name</label><input type="text" id="tpl-name" placeholder="e.g. Wilfred Madinaa Medicals"></div>
+    <div class="form-group"><label>Address Line 1</label><input type="text" id="tpl-addr1" placeholder="Street address"></div>
+    <div class="form-group"><label>Address Line 2</label><input type="text" id="tpl-addr2" placeholder="City, PIN"></div>
+    <div class="form-grid-2">
+      <div class="form-group"><label>Phone</label><input type="text" id="tpl-phone" placeholder="7299999392"></div>
+      <div class="form-group"><label>Email</label><input type="text" id="tpl-email" placeholder="shop@gmail.com"></div>
+    </div>
+    <div class="form-group"><label>Footer Tagline</label><input type="text" id="tpl-tagline" placeholder="Thanks for doing business with us!"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" style="flex:1" onclick="saveTemplate()">Save Template</button>
+      <button class="btn btn-ghost" onclick="closeTemplateModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA STORES ────────────────────────────────────────────────────────────
+let bills = JSON.parse(localStorage.getItem('wmm_bills') || '[]');
+let itemCount = 0;
+let currentBillData = null;
+let medicines = JSON.parse(localStorage.getItem('wmm_medicines') || '[]');
+let customers = JSON.parse(localStorage.getItem('wmm_customers') || '[]');
+let appLogs = JSON.parse(localStorage.getItem('wmm_logs') || '[]');
+const defaultTemplate = {
+  name: 'Wilfred Madinaa Medicals',
+  addr1: 'No:-38/365, Avai Shanmugam Salai, Triplicane',
+  addr2: 'Chennai - 600005',
+  phone: '7299999392',
+  email: 'wilfredmadinaamedicals@gmail.com',
+  badge: 'TAX INVOICE',
+  tagline: 'Thanks for doing business with us!'
+};
+let billTemplate = JSON.parse(localStorage.getItem('wmm_template') || 'null') || { ...defaultTemplate };
+let dirHandle = null;
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+document.getElementById('invoice-date').value = new Date().toISOString().split('T')[0];
+const lastNo = bills.length ? Math.max(...bills.map(b => parseInt(b.invoiceNo) || 0)) + 1 : 25;
+document.getElementById('invoice-no').value = lastNo;
+addItem(); addItem(); addItem();
+applyTemplateToInvoice();
+restoreFolderHandle();
+
+// ── TABS ────────────────────────────────────────────────────────────────────
+const ALL_TABS = ['billing','history','dashboard','configure','settings'];
+
+function showTab(t) {
+  ALL_TABS.forEach(n => {
+    const el = document.getElementById('tab-'+n);
+    if (el) el.classList.toggle('active', n === t);
+  });
+  ALL_TABS.forEach(n => {
+    const nav = document.getElementById('nav-'+n);
+    if (nav) nav.classList.toggle('active', n === t);
+  });
+  // scroll to top
+  document.getElementById('app-content').scrollTo(0, 0);
+  if (t === 'history') { renderHistory(); renderLog(); }
+  if (t === 'dashboard') renderDashboard();
+  if (t === 'configure') { renderMedicineList(); renderTemplatePreview(); renderCustomerList(); }
+}
+
+// ── ITEMS ────────────────────────────────────────────────────────────────────
+const medSuggActive = {};
+
+function addItem(prefillName = '', prefillPrice = '') {
+  itemCount++;
+  const id = 'item-' + itemCount;
+  const div = document.createElement('div');
+  div.className = 'item-row'; div.id = id;
+  div.innerHTML = `
+    <div class="med-name-wrap">
+      <input type="text" placeholder="Medicine name" autocomplete="off"
+             oninput="onMedNameInput(this,'${id}')"
+             onkeydown="onMedNameKey(event,'${id}')"
+             onblur="hideMedSugg('${id}')"
+             value="${escHtml(prefillName)}">
+      <div class="med-name-suggestions" id="med-sugg-${id}"></div>
+    </div>
+    <input type="number" placeholder="1" min="0" value="1" oninput="calcTotal()" style="text-align:center">
+    <input type="number" placeholder="0.00" min="0" step="0.01" oninput="calcTotal()" value="${prefillPrice}" style="text-align:right">
+    <button class="remove-btn" onclick="removeItem('${id}')">✕</button>`;
+  document.getElementById('items-list').appendChild(div);
+  calcTotal();
+}
+
+function onMedNameInput(inp, id) {
+  const val = inp.value.trim().toLowerCase();
+  const box = document.getElementById('med-sugg-' + id);
+  const exact = medicines.find(m => m.name.toLowerCase() === val);
+  if (exact) inp.closest('.item-row').querySelectorAll('input')[2].value = exact.price;
+  calcTotal();
+  if (!val) { box.classList.remove('open'); return; }
+  const matches = medicines.filter(m => m.name.toLowerCase().includes(val));
+  if (!matches.length) { box.classList.remove('open'); return; }
+  medSuggActive[id] = -1;
+  box.innerHTML = matches.map(m => `
+    <div class="med-name-suggestion"
+         onmousedown="selectMedSugg('${id}','${escHtml(m.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}',${m.price})">
+      <span class="sug-med-name">${escHtml(m.name)}</span>
+      <span class="sug-med-price">₹${parseFloat(m.price).toFixed(2)}</span>
+    </div>`).join('');
+  box.classList.add('open');
+}
+
+function selectMedSugg(id, name, price) {
+  const row = document.getElementById(id);
+  const inputs = row.querySelectorAll('input');
+  inputs[0].value = name; inputs[2].value = price;
+  document.getElementById('med-sugg-' + id).classList.remove('open');
+  calcTotal();
+}
+
+function hideMedSugg(id) {
+  setTimeout(() => { const b = document.getElementById('med-sugg-' + id); if(b) b.classList.remove('open'); }, 150);
+}
+
+function onMedNameKey(e, id) {
+  const box = document.getElementById('med-sugg-' + id);
+  const items = box.querySelectorAll('.med-name-suggestion');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); medSuggActive[id] = Math.min((medSuggActive[id] ?? -1) + 1, items.length - 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); medSuggActive[id] = Math.max((medSuggActive[id] ?? 0) - 1, 0); }
+  else if (e.key === 'Enter' && medSuggActive[id] >= 0) { e.preventDefault(); items[medSuggActive[id]].dispatchEvent(new MouseEvent('mousedown')); return; }
+  else if (e.key === 'Escape') { box.classList.remove('open'); return; }
+  else return;
+  items.forEach((el, i) => el.classList.toggle('active', i === medSuggActive[id]));
+  items[medSuggActive[id]]?.scrollIntoView({ block: 'nearest' });
+}
+
+function removeItem(id) {
+  const el = document.getElementById(id); if (el) { el.remove(); calcTotal(); }
+}
+
+function getItems() {
+  return Array.from(document.querySelectorAll('#items-list .item-row')).map(row => {
+    const inputs = row.querySelectorAll('input');
+    const name = inputs[0].value.trim();
+    const qty = parseFloat(inputs[1].value) || 0;
+    const price = parseFloat(inputs[2].value) || 0;
+    const amount = qty * price;
+    return { name, qty, price, amount };
+  }).filter(i => i.name && i.qty > 0);
+}
+
+function calcTotal() {
+  const items = getItems();
+  const sub = items.reduce((s,i) => s+i.amount, 0);
+  const disc = parseFloat(document.getElementById('discount').value) || 0;
+  const discAmt = sub * disc / 100;
+  const total = sub - discAmt;
+  document.getElementById('subtotal').textContent = '₹ ' + sub.toFixed(2);
+  document.getElementById('grand-total').textContent = '₹ ' + total.toFixed(2);
+}
+
+// ── GENERATE BILL ────────────────────────────────────────────────────────────
+function generateBill() {
+  const items = getItems();
+  if (!items.length) { alert('Please add at least one medicine item.'); return; }
+  const billTo = document.getElementById('bill-to').value.trim() || 'Customer';
+  const invoiceNo = document.getElementById('invoice-no').value;
+  const date = document.getElementById('invoice-date').value;
+  const payMode = document.getElementById('pay-mode').value;
+  const disc = parseFloat(document.getElementById('discount').value) || 0;
+  const sub = items.reduce((s,i) => s+i.amount, 0);
+  const discAmt = sub * disc / 100;
+  const total = sub - discAmt;
+  const totalQty = items.reduce((s,i) => s + i.qty, 0);
+  document.getElementById('p-inv-no').textContent = invoiceNo;
+  document.getElementById('p-date').textContent = formatDate(date);
+  document.getElementById('p-bill-to').textContent = billTo;
+  document.getElementById('p-sub').textContent = '₹ ' + total.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('p-received').textContent = '₹ 0.00';
+  document.getElementById('p-balance').textContent = '₹ ' + total.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('p-total-qty').textContent = totalQty;
+  document.getElementById('p-total-amt').textContent = '₹ ' + total.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('p-words').textContent = toWords(Math.round(total)) + ' Rupees only';
+  const tbody = document.getElementById('p-items');
+  tbody.innerHTML = items.map((item, i) => `
+    <tr>
+      <td>${i+1}</td><td>${escHtml(item.name)}</td>
+      <td style="text-align:right">${item.qty}</td>
+      <td style="text-align:right">₹ ${item.price.toFixed(2)}</td>
+      <td style="text-align:right">₹ ${item.amount.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+    </tr>`).join('');
+  currentBillData = { invoiceNo, date, billTo, payMode, items, sub: total, discAmt, total, disc };
+  const preview = document.getElementById('invoice-preview');
+  preview.style.display = 'block';
+  preview.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── PRINT ────────────────────────────────────────────────────────────────────
+function printBill() {
+  if (!currentBillData) return;
+  const { billTo, date } = currentBillData;
+  const safeName = billTo.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+  const d = date ? date.split('-') : ['','',''];
+  const filename = `${safeName}_${d[2] || ''}_${d[1] || ''}_${(d[0] || '').slice(-2)}`;
+  const prevTitle = document.title;
+  document.title = filename;
+  window.print();
+  setTimeout(() => { document.title = prevTitle; }, 2000);
+}
+
+// ── SAVE BILL ────────────────────────────────────────────────────────────────
+function saveBill() {
+  if (!currentBillData) { toast('⚠️ Generate a bill first.'); return; }
+  const data = currentBillData;
+  try {
+    const existing = bills.findIndex(b => b.invoiceNo === data.invoiceNo);
+    if (existing >= 0) bills[existing] = data; else bills.push(data);
+    localStorage.setItem('wmm_bills', JSON.stringify(bills));
+  } catch(e) { toast('❌ Save failed: ' + e.message); return; }
+  addLog(`Bill #${data.invoiceNo} saved — ₹${data.total.toFixed(2)} (${data.payMode})`);
+  writeFileToFolder('billing_history.json', JSON.stringify(bills, null, 2));
+  document.getElementById('invoice-no').value = (parseInt(data.invoiceNo) || 0) + 1;
+  if (document.getElementById('tab-history').classList.contains('active')) renderHistory();
+  if (document.getElementById('tab-dashboard').classList.contains('active')) renderDashboard();
+  toast('✅ Bill saved!');
+}
+
+// ── RESET ────────────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('items-list').innerHTML = '';
+  itemCount = 0;
+  document.getElementById('discount').value = 0;
+  document.getElementById('bill-to').value = '';
+  document.getElementById('invoice-no').value = bills.length ? Math.max(...bills.map(b => parseInt(b.invoiceNo) || 0)) + 1 : 25;
+  document.getElementById('invoice-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('invoice-preview').style.display = 'none';
+  calcTotal();
+  addItem(); addItem(); addItem();
+  currentBillData = null;
+}
+
+// ── HISTORY ──────────────────────────────────────────────────────────────────
+function renderHistory() {
+  const wrap = document.getElementById('history-content');
+  if (!bills.length) {
+    wrap.innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><p>No bills saved yet.<br>Generate a bill and tap "Save Bill".</p></div>';
+    return;
+  }
+  const sorted = [...bills].reverse();
+  wrap.innerHTML = sorted.map(b => `
+    <div class="history-item">
+      <div class="history-item-left">
+        <div class="history-item-name">${escHtml(b.billTo)}</div>
+        <div class="history-item-meta">Invoice #${escHtml(b.invoiceNo)} · ${escHtml(b.payMode)}</div>
+        <div class="history-item-actions">
+          <button class="btn btn-outline btn-xs" onclick="viewBill('${escHtml(b.invoiceNo)}')">👁 View</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteBill('${escHtml(b.invoiceNo)}')">🗑</button>
+        </div>
+      </div>
+      <div class="history-item-right">
+        <div class="history-item-amount">₹${parseFloat(b.total).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+        <div class="history-item-date">${formatDate(b.date)}</div>
+        <span class="badge badge-green" style="margin-top:4px">Paid</span>
+      </div>
+    </div>`).join('');
+}
+
+function deleteBill(invoiceNo) {
+  if (!confirm(`Delete bill #${invoiceNo}?`)) return;
+  bills = bills.filter(b => b.invoiceNo !== invoiceNo);
+  localStorage.setItem('wmm_bills', JSON.stringify(bills));
+  writeFileToFolder('billing_history.json', JSON.stringify(bills, null, 2));
+  addLog(`Deleted bill #${invoiceNo}`);
+  renderHistory();
+  toast('🗑 Bill deleted');
+}
+
+function viewBill(invoiceNo) {
+  const b = bills.find(x => x.invoiceNo === invoiceNo);
+  if (!b) return;
+  document.getElementById('bill-to').value = b.billTo;
+  document.getElementById('invoice-no').value = b.invoiceNo;
+  document.getElementById('invoice-date').value = b.date;
+  document.getElementById('pay-mode').value = b.payMode;
+  document.getElementById('items-list').innerHTML = '';
+  itemCount = 0;
+  b.items.forEach(i => addItem(i.name, i.price));
+  document.querySelectorAll('#items-list .item-row').forEach((row, idx) => {
+    if (b.items[idx]) row.querySelectorAll('input')[1].value = b.items[idx].qty;
+  });
+  document.getElementById('discount').value = b.disc || 0;
+  calcTotal();
+  currentBillData = { ...b };
+  showTab('billing');
+  generateBill();
+}
+
+function exportBills() {
+  const blob = new Blob([JSON.stringify(bills, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'billing_history.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  document.getElementById('stat-bills').textContent = bills.length;
+  const revenue = bills.reduce((s,b) => s + parseFloat(b.total || 0), 0);
+  document.getElementById('stat-revenue').textContent = '₹' + revenue.toLocaleString('en-IN',{maximumFractionDigits:0});
+  document.getElementById('stat-avg').textContent = bills.length ? '₹' + (revenue / bills.length).toLocaleString('en-IN',{maximumFractionDigits:0}) : '₹0';
+  const wrap = document.getElementById('dash-table-wrap');
+  if (!bills.length) { wrap.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>Save some bills to see stats here.</p></div>'; return; }
+  const recent = [...bills].reverse().slice(0, 10);
+  wrap.innerHTML = recent.map(b => `
+    <div class="history-item">
+      <div class="history-item-left">
+        <div class="history-item-name">${escHtml(b.billTo)}</div>
+        <div class="history-item-meta">Invoice #${escHtml(b.invoiceNo)} · ${escHtml(b.payMode)}</div>
+      </div>
+      <div class="history-item-right">
+        <div class="history-item-amount">₹${parseFloat(b.total).toLocaleString('en-IN',{minimumFractionDigits:2})}</div>
+        <div class="history-item-date">${formatDate(b.date)}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── LOG ──────────────────────────────────────────────────────────────────────
+function renderLog() {
+  const el = document.getElementById('log-content');
+  if (!el) return;
+  if (!appLogs.length) { el.innerHTML = '<div class="empty-state" style="padding:20px"><div class="empty-icon" style="font-size:1.5rem">🗒</div><p>No activity yet.</p></div>'; return; }
+  el.innerHTML = appLogs.map(e => `<div class="log-entry"><span class="log-ts">${e.ts}</span><span class="log-msg">${escHtml(e.msg)}</span></div>`).join('');
+}
+
+function clearLogs() {
+  if (!confirm('Clear all activity logs?')) return;
+  appLogs = []; localStorage.removeItem('wmm_logs'); renderLog(); toast('🗑 Logs cleared');
+}
+
+// ── TEMPLATE ─────────────────────────────────────────────────────────────────
+function renderTemplatePreview() {
+  const t = billTemplate;
+  const box = document.getElementById('tpl-preview-box');
+  if (!box) return;
+  box.innerHTML = `
+    <div class="tpl-shop-name">${escHtml(t.name)}</div>
+    <div class="tpl-addr">${escHtml(t.addr1)}, ${escHtml(t.addr2)}<br>📞 ${escHtml(t.phone)}</div>
+    <div class="tpl-badge">${escHtml(t.badge || 'TAX INVOICE')}</div>
+    <hr class="tpl-divider">
+    <div class="tpl-row"><span>Invoice No.</span><span>: XXX</span></div>
+    <div class="tpl-row"><span>Date</span><span>: DD-MM-YYYY</span></div>
+    <hr class="tpl-divider">
+    <div class="tpl-row"><span>Sample Medicine × 2</span><span>₹100.00</span></div>
+    <hr class="tpl-divider">
+    <div class="tpl-row" style="font-weight:700"><span>Total</span><span>₹100.00</span></div>
+    <div class="tpl-footer-msg">${escHtml(t.tagline)}</div>`;
+}
+
+function applyTemplateToInvoice() {
+  const t = billTemplate;
+  const addrEl = document.getElementById('tpl-disp-addr');
+  const taglineEl = document.getElementById('tpl-disp-tagline');
+  const sigEl = document.getElementById('tpl-disp-sig');
+  if (addrEl) addrEl.innerHTML = `${escHtml(t.addr1)},<br>${escHtml(t.addr2)}<br>Phone no. : ${escHtml(t.phone)}<br>Email : ${escHtml(t.email)}`;
+  if (taglineEl) taglineEl.textContent = t.tagline;
+  if (sigEl) sigEl.textContent = t.name;
+}
+
+function openTemplateModal() {
+  const t = billTemplate;
+  document.getElementById('tpl-name').value = t.name;
+  document.getElementById('tpl-addr1').value = t.addr1;
+  document.getElementById('tpl-addr2').value = t.addr2;
+  document.getElementById('tpl-phone').value = t.phone;
+  document.getElementById('tpl-email').value = t.email;
+  document.getElementById('tpl-tagline').value = t.tagline;
+  document.getElementById('tpl-modal').classList.add('open');
+}
+
+function closeTemplateModal() {
+  document.getElementById('tpl-modal').classList.remove('open');
+}
+
+function saveTemplate() {
+  billTemplate = {
+    name: document.getElementById('tpl-name').value.trim() || defaultTemplate.name,
+    addr1: document.getElementById('tpl-addr1').value.trim(),
+    addr2: document.getElementById('tpl-addr2').value.trim(),
+    phone: document.getElementById('tpl-phone').value.trim(),
+    email: document.getElementById('tpl-email').value.trim(),
+    badge: 'TAX INVOICE',
+    tagline: document.getElementById('tpl-tagline').value.trim()
+  };
+  localStorage.setItem('wmm_template', JSON.stringify(billTemplate));
+  closeTemplateModal();
+  renderTemplatePreview();
+  applyTemplateToInvoice();
+  writeFileToFolder('template.json', JSON.stringify(billTemplate, null, 2));
+  toast('✅ Template saved!');
+}
+
+document.getElementById('tpl-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeTemplateModal();
+});
+
+// ── MEDICINE CATALOGUE ────────────────────────────────────────────────────────
+function saveMedicines() {
+  localStorage.setItem('wmm_medicines', JSON.stringify(medicines));
+  writeFileToFolder('medicines.json', JSON.stringify(medicines, null, 2));
+}
+
+function renderMedicineList() {
+  const list = document.getElementById('med-list');
+  const badge = document.getElementById('med-count-badge');
+  badge.textContent = medicines.length + ' medicine' + (medicines.length !== 1 ? 's' : '');
+  if (!medicines.length) {
+    list.innerHTML = '<div class="empty-state" style="padding:20px"><div class="empty-icon" style="font-size:1.5rem">💊</div><p style="font-size:0.85rem">No medicines yet.</p></div>';
+    return;
+  }
+  list.innerHTML = medicines.map((m, i) => `
+    <div class="med-item" id="med-item-${i}">
+      <div style="flex:1">
+        <div class="med-item-name" id="med-name-disp-${i}">${escHtml(m.name)}</div>
+        <input class="med-name-input" id="med-name-inp-${i}" value="${escHtml(m.name)}" style="display:none;width:100%">
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="med-item-price" id="med-price-disp-${i}">₹${parseFloat(m.price).toFixed(2)}</span>
+        <input class="med-price-input" type="number" id="med-price-inp-${i}" value="${m.price}" min="0" step="0.01" style="display:none">
+      </div>
+      <div class="med-item-actions" id="med-actions-${i}">
+        <button class="btn btn-outline btn-xs" onclick="editMed(${i})">Edit</button>
+        <button class="btn btn-danger btn-xs" onclick="deleteMed(${i})">Del</button>
+      </div>
+      <div class="med-item-actions" id="med-save-actions-${i}" style="display:none">
+        <button class="btn btn-primary btn-xs" onclick="saveMed(${i})">Save</button>
+        <button class="btn btn-ghost btn-xs" onclick="cancelEditMed(${i})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function addMedicine() {
+  const nameInp = document.getElementById('new-med-name');
+  const priceInp = document.getElementById('new-med-price');
+  const name = nameInp.value.trim();
+  const price = parseFloat(priceInp.value) || 0;
+  if (!name) { nameInp.focus(); return; }
+  medicines.push({ name, price });
+  saveMedicines(); renderMedicineList();
+  addLog(`Added medicine: ${name} @ ₹${price}`);
+  nameInp.value = ''; priceInp.value = ''; nameInp.focus();
+  toast('✅ Medicine added!');
+}
+
+function deleteMed(i) {
+  if (!confirm(`Remove "${medicines[i].name}"?`)) return;
+  const name = medicines[i].name; medicines.splice(i, 1);
+  saveMedicines(); renderMedicineList();
+  addLog(`Deleted medicine: ${name}`); toast('🗑 Medicine removed');
+}
+
+function editMed(i) {
+  document.getElementById('med-item-' + i).classList.add('editing');
+  document.getElementById('med-name-disp-' + i).style.display = 'none';
+  document.getElementById('med-name-inp-' + i).style.display = 'block';
+  document.getElementById('med-price-disp-' + i).style.display = 'none';
+  document.getElementById('med-price-inp-' + i).style.display = 'block';
+  document.getElementById('med-actions-' + i).style.display = 'none';
+  document.getElementById('med-save-actions-' + i).style.display = 'flex';
+  document.getElementById('med-name-inp-' + i).focus();
+}
+
+function cancelEditMed(i) {
+  document.getElementById('med-item-' + i).classList.remove('editing');
+  document.getElementById('med-name-disp-' + i).style.display = 'block';
+  document.getElementById('med-name-inp-' + i).style.display = 'none';
+  document.getElementById('med-price-disp-' + i).style.display = 'block';
+  document.getElementById('med-price-inp-' + i).style.display = 'none';
+  document.getElementById('med-actions-' + i).style.display = 'flex';
+  document.getElementById('med-save-actions-' + i).style.display = 'none';
+}
+
+function saveMed(i) {
+  const name = document.getElementById('med-name-inp-' + i).value.trim();
+  const price = parseFloat(document.getElementById('med-price-inp-' + i).value) || 0;
+  if (!name) return;
+  const oldName = medicines[i].name;
+  medicines[i] = { name, price }; saveMedicines(); renderMedicineList();
+  addLog(`Updated medicine: ${oldName} → ${name} @ ₹${price}`); toast('✅ Medicine updated!');
+}
+
+function exportMedicines() {
+  const blob = new Blob([JSON.stringify(medicines, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'medicines.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function importMedicines(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('Invalid format');
+      medicines = data.filter(m => m.name); saveMedicines(); renderMedicineList();
+      toast('✅ ' + medicines.length + ' medicines imported!');
+    } catch { alert('Invalid JSON file.'); }
+  };
+  reader.readAsText(file); event.target.value = '';
+}
+
+// ── CUSTOMER DIRECTORY ────────────────────────────────────────────────────────
+function saveCustomers() {
+  localStorage.setItem('wmm_customers', JSON.stringify(customers));
+  writeFileToFolder('customers.json', JSON.stringify(customers, null, 2));
+}
+
+function renderCustomerList() {
+  const list = document.getElementById('cust-list');
+  const badge = document.getElementById('cust-count-badge');
+  if (!list) return;
+  badge.textContent = customers.length + ' customer' + (customers.length !== 1 ? 's' : '');
+  if (!customers.length) {
+    list.innerHTML = '<div class="empty-state" style="padding:20px"><div class="empty-icon" style="font-size:1.5rem">👤</div><p style="font-size:0.85rem">No customers yet.</p></div>';
+    return;
+  }
+  list.innerHTML = customers.map((c, i) => `
+    <div class="cust-item" id="cust-item-${i}">
+      <div class="cust-item-view">
+        <div style="flex:1">
+          <div class="cust-name">${escHtml(c.name)}</div>
+          <div class="cust-meta">${c.phone ? '📞 ' + escHtml(c.phone) : ''}${c.phone && c.address ? ' · ' : ''}${c.address ? escHtml(c.address) : ''}</div>
+        </div>
+        <div class="med-item-actions">
+          <button class="btn btn-outline btn-xs" onclick="editCustomer(${i})">Edit</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteCustomer(${i})">Del</button>
+        </div>
+      </div>
+      <div class="cust-item-edit">
+        <input class="cust-edit-input" id="cust-name-inp-${i}" value="${escHtml(c.name)}" placeholder="Name">
+        <input class="cust-edit-input" id="cust-phone-inp-${i}" value="${escHtml(c.phone||'')}" placeholder="Phone">
+        <input class="cust-edit-input" id="cust-addr-inp-${i}" value="${escHtml(c.address||'')}" placeholder="Address">
+        <div class="med-item-actions">
+          <button class="btn btn-primary btn-xs" onclick="saveCustomerEdit(${i})">Save</button>
+          <button class="btn btn-ghost btn-xs" onclick="cancelCustomerEdit(${i})">✕</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function addCustomer() {
+  const name = document.getElementById('new-cust-name').value.trim();
+  const phone = document.getElementById('new-cust-phone').value.trim();
+  const address = document.getElementById('new-cust-addr').value.trim();
+  if (!name) { document.getElementById('new-cust-name').focus(); return; }
+  customers.push({ name, phone, address }); saveCustomers(); renderCustomerList();
+  document.getElementById('new-cust-name').value = '';
+  document.getElementById('new-cust-phone').value = '';
+  document.getElementById('new-cust-addr').value = '';
+  document.getElementById('new-cust-name').focus();
+  toast('✅ Customer added!');
+}
+
+function deleteCustomer(i) {
+  if (!confirm(`Remove "${customers[i].name}"?`)) return;
+  customers.splice(i, 1); saveCustomers(); renderCustomerList(); toast('🗑 Customer removed');
+}
+
+function editCustomer(i) {
+  document.getElementById('cust-item-' + i).classList.add('editing');
+  document.getElementById('cust-name-inp-' + i).focus();
+}
+
+function cancelCustomerEdit(i) {
+  document.getElementById('cust-item-' + i).classList.remove('editing');
+}
+
+function saveCustomerEdit(i) {
+  const name = document.getElementById('cust-name-inp-' + i).value.trim();
+  if (!name) return;
+  customers[i] = {
+    name,
+    phone: document.getElementById('cust-phone-inp-' + i).value.trim(),
+    address: document.getElementById('cust-addr-inp-' + i).value.trim()
+  };
+  saveCustomers(); renderCustomerList(); toast('✅ Customer updated!');
+}
+
+function exportCustomers() {
+  const blob = new Blob([JSON.stringify(customers, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'customers.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function importCustomers(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('Invalid format');
+      customers = data.filter(c => c.name); saveCustomers(); renderCustomerList();
+      addLog(`Imported ${customers.length} customers from file`);
+      toast('✅ ' + customers.length + ' customers imported!');
+    } catch { alert('Invalid JSON file.'); }
+  };
+  reader.readAsText(file); event.target.value = '';
+}
+
+// ── BILL-TO AUTOCOMPLETE ──────────────────────────────────────────────────────
+let suggActiveIdx = -1;
+
+function onBillToInput() {
+  const val = document.getElementById('bill-to').value.trim().toLowerCase();
+  const box = document.getElementById('bill-to-suggestions');
+  if (!val) { box.classList.remove('open'); return; }
+  const matches = customers.filter(c => c.name.toLowerCase().includes(val));
+  if (!matches.length) { box.classList.remove('open'); return; }
+  suggActiveIdx = -1;
+  box.innerHTML = matches.map((c, i) => `
+    <div class="bill-to-suggestion" data-idx="${i}" data-name="${escHtml(c.name)}"
+         onmousedown="selectSuggestion('${escHtml(c.name).replace(/'/g,"\\'")}')">
+      <div class="sug-name">${escHtml(c.name)}</div>
+      ${c.phone || c.address ? `<div class="sug-meta">${c.phone ? '📞 '+escHtml(c.phone) : ''}${c.phone && c.address ? ' · ' : ''}${c.address ? escHtml(c.address) : ''}</div>` : ''}
+    </div>`).join('');
+  box.classList.add('open');
+}
+
+function selectSuggestion(name) {
+  document.getElementById('bill-to').value = name;
+  document.getElementById('bill-to-suggestions').classList.remove('open');
+}
+
+function hideSuggestions() {
+  setTimeout(() => document.getElementById('bill-to-suggestions').classList.remove('open'), 150);
+}
+
+function onBillToKey(e) {
+  const box = document.getElementById('bill-to-suggestions');
+  const items = box.querySelectorAll('.bill-to-suggestion');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); suggActiveIdx = Math.min(suggActiveIdx + 1, items.length - 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); suggActiveIdx = Math.max(suggActiveIdx - 1, 0); }
+  else if (e.key === 'Enter' && suggActiveIdx >= 0) { e.preventDefault(); selectSuggestion(items[suggActiveIdx].dataset.name); return; }
+  else if (e.key === 'Escape') { box.classList.remove('open'); return; }
+  else { return; }
+  items.forEach((el, i) => el.classList.toggle('active', i === suggActiveIdx));
+  items[suggActiveIdx]?.scrollIntoView({ block: 'nearest' });
+}
+
+// ── SETTINGS / FOLDER ─────────────────────────────────────────────────────────
+async function pickFolder() {
+  if (!window.showDirectoryPicker) { alert('Your browser does not support folder selection.\nPlease use Chrome or Edge.'); return; }
+  try {
+    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    await saveHandleToIDB(dirHandle);
+    updateFolderUI(dirHandle.name);
+    await syncToFolder();
+    toast('✅ Folder selected: ' + dirHandle.name);
+    addLog('Data folder set: ' + dirHandle.name);
+  } catch (e) { if (e.name !== 'AbortError') alert('Could not access folder: ' + e.message); }
+}
+
+function updateFolderUI(name) {
+  const display = document.getElementById('folder-path-display');
+  display.textContent = '📁 ' + name;
+  display.classList.add('active');
+  document.getElementById('folder-actions').style.display = 'block';
+}
+
+async function syncToFolder() {
+  await writeFileToFolder('billing_history.json', JSON.stringify(bills, null, 2));
+  await writeFileToFolder('medicines.json', JSON.stringify(medicines, null, 2));
+  await writeFileToFolder('customers.json', JSON.stringify(customers, null, 2));
+  await writeFileToFolder('template.json', JSON.stringify(billTemplate, null, 2));
+  toast('✅ Data synced to folder!');
+}
+
+async function writeFileToFolder(filename, content) {
+  if (!dirHandle) return;
+  try {
+    const fh = await dirHandle.getFileHandle(filename, { create: true });
+    const writable = await fh.createWritable();
+    await writable.write(content); await writable.close();
+  } catch (e) { /* silent fail */ }
+}
+
+function addLog(msg) {
+  const ts = new Date().toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: true });
+  appLogs.unshift({ ts, msg });
+  if (appLogs.length > 200) appLogs.length = 200;
+  try { localStorage.setItem('wmm_logs', JSON.stringify(appLogs)); } catch {}
+  const line = `[${new Date().toISOString()}] ${msg}\n`;
+  if (dirHandle) { dirHandle.getFileHandle('app.log', { create: true }).then(fh => fh.createWritable()).then(w => { w.write(line); w.close(); }).catch(() => {}); }
+  if (document.getElementById('tab-history').classList.contains('active')) renderLog();
+}
+
+function clearFolder() {
+  dirHandle = null; clearHandleFromIDB();
+  document.getElementById('folder-path-display').classList.remove('active');
+  document.getElementById('folder-actions').style.display = 'none';
+  toast('Folder cleared');
+}
+
+// IndexedDB for persisting directory handle
+function openIDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('wmm_store', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+    req.onsuccess = e => res(e.target.result); req.onerror = rej;
+  });
+}
+async function saveHandleToIDB(handle) {
+  try { const db = await openIDB(); const tx = db.transaction('handles', 'readwrite'); tx.objectStore('handles').put(handle, 'dir'); } catch {}
+}
+async function clearHandleFromIDB() {
+  try { const db = await openIDB(); const tx = db.transaction('handles', 'readwrite'); tx.objectStore('handles').delete('dir'); } catch {}
+}
+async function restoreFolderHandle() {
+  try {
+    const db = await openIDB();
+    const tx = db.transaction('handles', 'readonly');
+    const req = tx.objectStore('handles').get('dir');
+    req.onsuccess = async e => {
+      if (!e.target.result) return;
+      const handle = e.target.result;
+      const perm = await handle.queryPermission({ mode: 'readwrite' });
+      if (perm === 'granted') { dirHandle = handle; updateFolderUI(handle.name); }
+    };
+  } catch {}
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function formatDate(d) {
+  if (!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}-${m}-${y}`;
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toWords(n) {
+  const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  if (n===0) return 'Zero';
+  if (n<20) return ones[n];
+  if (n<100) return tens[Math.floor(n/10)] + (n%10?' '+ones[n%10]:'');
+  if (n<1000) return ones[Math.floor(n/100)]+' Hundred'+(n%100?' '+toWords(n%100):'');
+  if (n<100000) return toWords(Math.floor(n/1000))+' Thousand'+(n%1000?' '+toWords(n%1000):'');
+  if (n<10000000) return toWords(Math.floor(n/100000))+' Lakh'+(n%100000?' '+toWords(n%100000):'');
+  return toWords(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+toWords(n%10000000):'');
+}
+</script>
+</body>
+</html>
