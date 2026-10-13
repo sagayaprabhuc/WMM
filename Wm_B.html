@@ -32,27 +32,43 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%); color: var(--text); font-size: 14px; line-height: 1.5; }
 
 /* ── APP SHELL ── */
-.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
+.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; padding-top: env(safe-area-inset-top); }
 
 /* ── HEADER ── */
 .app-header {
-  background: var(--primary);
-  height: var(--header-height);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  min-height: 90px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 14px 16px;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(26,107,60,0.25);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   z-index: 10;
+  position: relative;
+  overflow: hidden;
+  border-bottom: none;
 }
-.header-brand { display: flex; align-items: center; gap: 10px; }
-.header-icon { width: 34px; height: 34px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.header-title { color: white; }
-.header-title h1 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; line-height: 1.2; }
-.header-title p { font-size: 0.65rem; opacity: 0.75; margin-top: 1px; }
-.header-action { background: rgba(255,255,255,0.15); border: none; border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; }
+/* Subtle diagonal glowing backdrop overlay */
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.header-brand { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; z-index: 2; }
+.header-logo { height: 52px; width: auto; max-width: 280px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+.header-title { text-align: center; }
+.header-title h1 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.3; color: var(--white); text-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+.header-title p { font-size: 0.72rem; color: rgba(255, 255, 255, 0.85); margin-top: 2px; line-height: 1.4; }
+.header-action { display: none; }
 
 /* ── SCROLLABLE CONTENT ── */
 .app-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(var(--nav-height) + 16px); }
@@ -65,28 +81,54 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0;
   height: var(--nav-height);
-  background: white;
-  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   display: flex; align-items: stretch;
-  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
   z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-item {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 3px; border: none; background: none; cursor: pointer;
   color: var(--text-secondary); font-size: 0.62rem; font-weight: 500;
-  font-family: 'Inter', sans-serif; padding: 8px 4px; transition: color 0.2s;
+  font-family: 'Inter', sans-serif; padding: 8px 4px; transition: all 0.25s ease;
   position: relative;
 }
-.nav-item.active { color: var(--primary); }
-.nav-item.active::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 3px; background: var(--primary); border-radius: 0 0 3px 3px; }
+.nav-item.active { color: var(--primary); font-weight: 600; }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 6px rgba(26,107,60,0.3);
+}
 .nav-icon { font-size: 20px; line-height: 1; }
 .nav-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── CARDS ── */
-.card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-bottom: 12px; }
+.card {
+  background: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
 .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.card-title { font-size: 0.88rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+.card-title { font-size: 0.9rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 6px; }
 
 /* ── FORM ELEMENTS ── */
 .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
@@ -95,11 +137,11 @@ label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-
 input, select, textarea {
   padding: 11px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
   font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text);
-  background: white; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+  background: white; transition: all 0.2s ease; width: 100%;
   -webkit-appearance: none; appearance: none;
 }
 select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,107,60,0.1); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(26, 107, 60, 0.12); background-color: #fff; }
 input::placeholder { color: #d1d5db; }
 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -219,20 +261,22 @@ input::placeholder { color: #d1d5db; }
 .sug-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
 
 /* ── INVOICE PREVIEW ── */
-#invoice-preview { display: none; background: white; border-radius: var(--radius); padding: 20px 16px; box-shadow: var(--shadow); margin-top: 12px; font-family: 'Inter', sans-serif; position: relative; overflow: hidden; }
-.inv-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 55%; pointer-events: none; z-index: 0; opacity: 0.06; }
+#invoice-preview { display: none; background-color: var(--white); border-radius: var(--radius); padding: 20px 16px; box-shadow: var(--shadow); margin-top: 12px; font-family: 'Inter', sans-serif; position: relative; overflow: hidden; }
+.inv-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 55%; pointer-events: none; z-index: 0; opacity: 0.15; }
 .inv-watermark img { width: 100%; height: auto; display: block; }
 #invoice-preview > *:not(.inv-watermark) { position: relative; z-index: 1; }
-.inv-header { display: flex; justify-content: flex-start; align-items: flex-end; padding-bottom: 12px; border-bottom: 2px solid var(--primary); margin-bottom: 0; }
+.inv-header { display: flex; justify-content: flex-start; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--primary); margin-bottom: 0; text-align: left; background-color: var(--white); }
+.inv-shop { text-align: left; width: 100%; background-color: var(--white); }
+.inv-shop img { margin: 0 0 10px 0; }
 .inv-shop p { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.6; margin-top: 5px; }
-.inv-bill-row { display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid var(--border); border-top: none; margin-bottom: 0; }
-.inv-bill-left { padding: 10px 12px; flex: 1; border-right: 1px solid var(--border); }
-.inv-bill-right { padding: 10px 12px; min-width: 180px; }
+.inv-bill-row { display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid var(--border); border-top: none; margin-bottom: 0; background-color: var(--white); }
+.inv-bill-left { padding: 10px 12px; flex: 1; border-right: 1px solid var(--border); background-color: var(--white); }
+.inv-bill-right { padding: 10px 12px; min-width: 180px; background-color: var(--white); }
 .inv-section-label { font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .inv-bill-name { font-size: 0.88rem; font-weight: 600; }
 .inv-detail-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 1px 0; }
 .inv-detail-row span:first-child { color: var(--text-secondary); }
-.inv-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-top: none; }
+.inv-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-top: none; background-color: var(--white); }
 .inv-table thead tr { background: var(--primary); }
 .inv-table th { color: white; padding: 8px 10px; font-size: 0.72rem; font-weight: 600; text-align: left; }
 .inv-table th:not(:first-child) { text-align: right; }
@@ -241,17 +285,17 @@ input::placeholder { color: #d1d5db; }
 .inv-table td:not(:first-child):not(:nth-child(2)) { text-align: right; }
 .inv-table tr:last-child td { border-bottom: none; }
 .inv-table .inv-total-row td { font-weight: 700; background: var(--primary-light); border-top: 2px solid var(--primary); font-size: 0.82rem; }
-.inv-bottom { display: flex; border: 1px solid var(--border); border-top: none; }
-.inv-words-col { flex: 1; padding: 10px 12px; border-right: 1px solid var(--border); }
+.inv-bottom { display: flex; border: 1px solid var(--border); border-top: none; background-color: var(--white); }
+.inv-words-col { flex: 1; padding: 10px 12px; border-right: 1px solid var(--border); background-color: var(--white); }
 .inv-words-label { font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .inv-words-text { font-size: 0.78rem; color: var(--text); line-height: 1.4; }
-.inv-totals-col { min-width: 180px; padding: 10px 12px; }
+.inv-totals-col { min-width: 180px; padding: 10px 12px; background-color: var(--white); }
 .inv-totals-row { display: flex; justify-content: space-between; padding: 2px 0; font-size: 0.8rem; }
 .inv-totals-row.inv-balance { font-weight: 700; font-size: 0.85rem; color: var(--primary); border-top: 1.5px solid var(--primary); margin-top: 4px; padding-top: 6px; }
-.inv-footer-row { display: flex; justify-content: space-between; align-items: flex-end; border: 1px solid var(--border); border-top: none; padding: 10px 12px; }
-.inv-footer-left { font-size: 0.76rem; color: var(--text-secondary); }
+.inv-footer-row { display: flex; justify-content: space-between; align-items: flex-end; border: 1px solid var(--border); border-top: none; padding: 10px 12px; background-color: var(--white); }
+.inv-footer-left { font-size: 0.76rem; color: var(--text-secondary); background-color: var(--white); }
 .inv-footer-left strong { color: var(--text); display: block; margin-bottom: 2px; }
-.inv-sig { text-align: right; font-size: 0.76rem; }
+.inv-sig { text-align: right; font-size: 0.76rem; background-color: var(--white); }
 .inv-sig .sig-line { border-top: 1px solid var(--text); width: 140px; margin-left: auto; margin-bottom: 4px; margin-top: 28px; }
 .inv-sig .sig-name { font-weight: 600; font-size: 0.8rem; }
 .inv-sig .sig-sub { color: var(--text-secondary); font-size: 0.7rem; margin-top: 1px; }
@@ -301,6 +345,28 @@ input::placeholder { color: #d1d5db; }
 .add-form-box .add-form-title { font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 .add-form-grid { display: grid; grid-template-columns: 1fr 90px; gap: 8px; align-items: end; }
 
+/* ── HOME / LANDING ── */
+body.on-home .bottom-nav { display: none; }
+body.on-home .app-content { padding-bottom: 16px; }
+.hero { position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: 18px; touch-action: pan-y; }
+.hero-track { display: flex; transition: transform 0.5s ease; }
+.hero-slide { flex: 0 0 100%; min-height: 160px; padding: 20px 18px 30px; color: white; display: flex; align-items: center; gap: 14px; }
+.hero-slide .hero-emoji { font-size: 3rem; line-height: 1; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+.hero-slide .hero-tag { display: inline-block; background: rgba(255,255,255,0.22); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
+.hero-slide h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; line-height: 1.25; margin-bottom: 4px; }
+.hero-slide p { font-size: 0.78rem; opacity: 0.92; line-height: 1.45; }
+.hero-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+.hero-dot { width: 7px; height: 7px; border-radius: 4px; border: none; padding: 0; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.25s; }
+.hero-dot.active { width: 20px; background: white; }
+.new-order-btn { width: 100%; padding: 15px 18px; font-size: 1rem; border-radius: var(--radius); box-shadow: 0 4px 16px rgba(26,107,60,0.35); margin-bottom: 22px; }
+.category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.category-tile { aspect-ratio: 1 / 1; background: white; border: none; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; cursor: pointer; font-family: 'Inter', sans-serif; transition: transform 0.15s; }
+.category-tile:active { transform: scale(0.97); }
+.category-tile .cat-emoji { font-size: 2.4rem; width: 64px; height: 64px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; }
+.category-tile .cat-name { font-size: 0.88rem; font-weight: 600; color: var(--text); text-align: center; }
+.category-tile .cat-sub { font-size: 0.7rem; color: var(--text-secondary); text-align: center; }
+.back-home-btn { margin-bottom: 12px; }
+
 /* ── PRINT ── */
 @media print {
   @page { margin: 10mm; size: A4; }
@@ -312,14 +378,13 @@ input::placeholder { color: #d1d5db; }
 }
 </style>
 </head>
-<body>
+<body class="on-home">
 <div class="app">
   <!-- HEADER -->
   <header class="app-header">
     <div class="header-brand">
-      <div class="header-icon">💊</div>
       <div class="header-title">
-        <h1>Wilfred Madinaa Medicals</h1>
+        <h1 style="font-size: 1.3rem;">Wilfred Madinaa Medicals</h1>
         <p>No:-38/365, Triplicane, Chennai-600005</p>
       </div>
     </div>
@@ -328,8 +393,43 @@ input::placeholder { color: #d1d5db; }
   <!-- SCROLLABLE CONTENT -->
   <div class="app-content" id="app-content">
 
+    <!-- HOME TAB -->
+    <div class="tab-page active" id="tab-home">
+      <div class="hero" id="hero">
+        <div class="hero-track" id="hero-track"><!-- rendered by JS --></div>
+        <div class="hero-dots" id="hero-dots"></div>
+      </div>
+
+      <button class="btn btn-primary new-order-btn" onclick="showTab('billing')">🛒 New Order</button>
+
+      <div class="section-label">Shop by Category</div>
+      <div class="category-grid">
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">💊</span>
+          <span class="cat-name">Medicines</span>
+          <span class="cat-sub">Tablets &amp; capsules</span>
+        </button>
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">🦷</span>
+          <span class="cat-name">Dental Care</span>
+          <span class="cat-sub">Pastes, gels &amp; gargles</span>
+        </button>
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">💉</span>
+          <span class="cat-name">Injections</span>
+          <span class="cat-sub">Clinic supplies</span>
+        </button>
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">❤️</span>
+          <span class="cat-name">BP &amp; Heart</span>
+          <span class="cat-sub">Daily care</span>
+        </button>
+      </div>
+    </div>
+
     <!-- BILLING TAB -->
-    <div class="tab-page active" id="tab-billing">
+    <div class="tab-page" id="tab-billing">
+      <button class="btn btn-ghost btn-sm back-home-btn" onclick="showTab('home')">← Back to Home</button>
       <div class="card">
         <div class="card-header">
           <div class="card-title">🧾 Bill Details</div>
@@ -394,12 +494,12 @@ input::placeholder { color: #d1d5db; }
       </div>
 
       <div id="invoice-preview">
-        <div class="inv-watermark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAXgAklEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a9mJlddddVVV1111VVXXXXVVVddddVVV/1fIEDiAYyp/BuJ58NcddVVV1111VVXXXXVVVddddVVV13138oGkMCAjCv/Ruaqq6666qqrrrrqqquuuuqqq6666qr/sQyAwFSuuuqqq6666qqrrrrqqquuuuqqq676v8oAwVVXXXXVVVddddVVV1111VVXXXXVVf9XCUFw1VVXXXXVVVddddVVV1111VVXXXXV/2UEV1111VVXXXXVVVddddVVV1111VVX/R9h7mcwYEDBVVddddVVV1111VVXXXXVVVddddVV/5cRXHXVVVddddVVV1111VVXXXXVVVdd9X+HwdzPAK5cddVVV1111VVXXXXVVVddddVVV131f425nyG46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquu+j9CPH/iqquuuuqqq6666v81KlddddVVV1111VX/R5j7iX+ReDbznMxzEP9q5qqrrrrqqquuuup/DipXXXXVVVddddVV/2cYY8A8i0Fg/kUGAAxgnk0AIF4Qm38VgXk2AeIBxP1kW5Iknk1gnk1grrrqqquuuuqqq14YlJlcddVVV1111VVX/S9nAASSbMD8H5KZQERwhYQBAyAwV1111VVXXXXVVS8Mlauuuuqqq6666qr/zQwCgWDcO7jwpKd2m3NCbthgwLLAONPptJ0Y24BtMLYznemWtoURgAFJBJIUCCQJDLadGBsJSYCFkSQUkiQhCcAG0mCQhEIIJCQppEACKYSQQuBpWB0tr3mxR9etTcC2AAkbBOKqq6666qqrrrrqRULlqquuuuqqq6666n8nAyAgc/fpdz3lp372L7/ruy8++QmlbqBQa8KWEgyJbRsbMIAEGJANAgQCwIBtAISQhBCWbYwNGGGbywwIJIQkBRECIQQyYMA2CGMkAyWkIpVAkhACMNgKaKv18qaXe7mHvf7rPOTN3uTal3qsasczGcRVV1111VVXXXXViwRlJlddddVVV1111VX/2xgEwO7f/t0ffP6XPOEXf+Po6FyhLGIhMBiMTYIMFoDBPJtsCSFBSJIAIQmQBcZgYzuFsQEB4jKDEEIgAGQHyAiDxRXifgZjwIAxADZgwMjCgARKO9v6yNNivvnQ13ntV/2Ej3nwa746ETYSgCTbXHXVVVddddVVV70wKDO56qqrrrrqqquu+l/FIGgHB3/yuV/2R9/07avD+zr181hgKgTmssQGi8SAeW4CCTDmfhJYgMAgJMBgnGBssLlCyICQERYAAhkJYfEABrDEZcZIApAACQFYJCAwaYzsGNq4ysOYz17ind/7jT//Uzeuv95GQsiYq6666qqrrrrqqhcGZSZXXXXVVVddddVV/9t4PXz3G7/9E/7gN2dl3pxdTgvTQU/pcCklTEAmU2GSE8k8lzAhwiZAhFUgEDYCgQEsErAwKTcZWwASKIAwGGQs7idsMBjAGAyGZiwnBmRksBFCIGSbxA1spEinJKEAbNlHqEZZ5Xp27OR7/dxPXvMqLw+AADBXXXXVVVddddVVzweVq6666qqrrrrqv5UBEP/+x3zuT37L1+5qb1dJHc7a1dJUkIiYQAoTlTiAGYC4n4AAAMYAAON+5gIjYwAAAe9cJoC4m4CQDmAAAGt3AAAAAElFTkSuQmCC" alt="WMM"></div>
+        <div class="inv-watermark"><img src="wmm-logo.png" alt="WMM"></div>
 
         <!-- Row 1: Shop info -->
         <div class="inv-header">
           <div class="inv-shop">
-            <img id="tpl-disp-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAXgAklEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a9mJlddddVVV1111VVXXXXVVVddddVVV/1fIEDiAYyp/BuJ58NcddVVV1111VVXXXXVVVddddVVV13138oGkMCAjCv/Ruaqq6666qqrrrrqqquuuuqqq6666qr/sQyAwFSuuuqqq6666qqrrrrqqquuuuqqq676v8oAwVVXXXXVVVddddVVV1111VVXXXXVVf9XCUFw1VVXXXXVVVddddVVV1111VVXXXXV/2UEV1111VVXXXXVVVddddVVV1111VVX/R9h7mcwYEDBVVddddVVV1111VVXXXXVVVddddVV/5cRXHXVVVddddVVV1111VVXXXXVVVdd9X+HwdzPAK5cddVVV1111VVXXXXVVVddddVVV131f425nyG46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquuuuqqq6666qqrrrrq/zKCq6666qqrrrrqqquuuuqqq6666qqr/i8juOqqq6666qqrrrrqqquuuuqqq6666v8ygquuuuqqq6666qqrrrrqqquuuuqqq/4vI7jqqquuuuqqq6666qqrrrrqqquuuur/MoKrrrrqqquuuuqqq6666qqrrrrqqqv+LyO46qqrrrrqqquu+j9CPH/iqquuuuqqq6666v81KlddddVVV1111VX/R5j7iX+ReDbznMxzEP9q5qqrrrrqqquuuup/DipXXXXVVVddddVV/2cYY8A8i0Fg/kUGAAxgnk0AIF4Qm38VgXk2AeIBxP1kW5Iknk1gnk1grrrqqquuuuqqq14YlJlcddVVV1111VVX/S9nAASSbMD8H5KZQERwhYQBAyAwV1111VVXXXXVVS8Mlauuuuqqq6666qr/zQwCgWDcO7jwpKd2m3NCbthgwLLAONPptJ0Y24BtMLYznemWtoURgAFJBJIUCCQJDLadGBsJSYCFkSQUkiQhCcAG0mCQhEIIJCQppEACKYSQQuBpWB0tr3mxR9etTcC2AAkbBOKqq6666qqrrrrqRULlqquuuuqqq6666n8nAyAgc/fpdz3lp372L7/ruy8++QmlbqBQa8KWEgyJbRsbMIAEGJANAgQCwIBtAISQhBCWbYwNGGGbywwIJIQkBRECIQQyYMA2CGMkAyWkIpVAkhACMNgKaKv18qaXe7mHvf7rPOTN3uTal3qsasczGcRVV1111VVXXXXViwRlJlddddVVV1111VX/2xgEwO7f/t0ffP6XPOEXf+Po6FyhLGIhMBiMTYIMFoDBPJtsCSFBSJIAIQmQBcZgYzuFsQEB4jKDEEIgAGQHyAiDxRXifgZjwIAxADZgwMjCgARKO9v6yNNivvnQ13ntV/2Ej3nwa746ETYSgCTbXHXVVVddddVVV70wKDO56qqrrrrqqquu+l/FIGgHB3/yuV/2R9/07avD+zr181hgKgTmssQGi8SAeW4CCTDmfhJYgMAgJMBgnGBssLlCyICQERYAAhkJYfEABrDEZcZIApAACQFYJCAwaYzsGNq4ysOYz17ind/7jT//Uzeuv95GQsiYq6666qqrrrrqqhcGZSZXXXXVVVddddVV/9t4PXz3G7/9E/7gN2dl3pxdTgvTQU/pcCklTEAmU2GSE8k8lzAhwiZAhFUgEDYCgQEsErAwKTcZWwASKIAwGGQs7idsMBjAGAyGZiwnBmRksBFCIGSbxA1spEinJKEAbNlHqEZZ5Xp27OR7/dxPXvMqLw+AADBXXXXVVVddddVVzweVq6666qqrrrrqvxUA" alt="Wilfred Madinaa Medicals" style="height:60px;width:auto;display:block;">
+            <img id="tpl-disp-logo" src="wmm-logo.png" alt="Wilfred Madinaa Medicals" style="height:60px;width:auto;display:block;margin-bottom:8px;" onerror="this.style.display='none'">
             <p id="tpl-disp-addr">No:-38/365, Avai Shanmugam Salai,<br>Triplicane, Chennai-600005<br>Phone: 7299999392<br>Email: wilfredmadinaamedicals@gmail.com</p>
           </div>
         </div>
@@ -678,7 +778,43 @@ input::placeholder { color: #d1d5db; }
 let bills = JSON.parse(localStorage.getItem('wmm_bills') || '[]');
 let itemCount = 0;
 let currentBillData = null;
-let medicines = JSON.parse(localStorage.getItem('wmm_medicines') || '[]');
+const defaultMedicines = [
+  { "name": "Aldigesic SP", "price": 80 },
+  { "name": "Pantosec 40", "price": 97 },
+  { "name": "ShyNM Paste", "price": 167 },
+  { "name": "hexigel", "price": 68 },
+  { "name": "Ketorol DT", "price": 151 },
+  { "name": "Almox 500", "price": 89 },
+  { "name": "Betadine Gargle", "price": 162 },
+  { "name": "Metrogyl (G)", "price": 14 },
+  { "name": "Metrogyl 400", "price": 32 },
+  { "name": "Dexalab inj", "price": 10 },
+  { "name": "Ketolac inj", "price": 28 },
+  { "name": "Dolonex inj", "price": 31 },
+  { "name": "Telekonol 40mg", "price": 53 },
+  { "name": "Altiva 120mg", "price": 155 },
+  { "name": "Aten 25mg", "price": 26 },
+  { "name": "Dolo 650", "price": 25 },
+  { "name": "Ketolac dt", "price": 42 }
+];
+let medicines = JSON.parse(localStorage.getItem('wmm_medicines') || 'null');
+if (!medicines || medicines.length === 0) {
+  medicines = defaultMedicines;
+  localStorage.setItem('wmm_medicines', JSON.stringify(medicines));
+  
+  // Dynamically load the bundled JSON if available
+  fetch('medicines-ready-to-import.json')
+    .then(r => r.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        medicines = data;
+        localStorage.setItem('wmm_medicines', JSON.stringify(medicines));
+        if (typeof renderMedicineList === 'function' && document.getElementById('tab-configure').classList.contains('active')) {
+          renderMedicineList();
+        }
+      }
+    }).catch(e => console.log('No bundled JSON found or error loading'));
+}
 let customers = JSON.parse(localStorage.getItem('wmm_customers') || '[]');
 let appLogs = JSON.parse(localStorage.getItem('wmm_logs') || '[]');
 const defaultTemplate = {
@@ -701,10 +837,47 @@ addItem(); addItem(); addItem();
 applyTemplateToInvoice();
 restoreFolderHandle();
 
+// Check if Android and setup storage message
+const isAndroid = /Android/i.test(navigator.userAgent);
+if (isAndroid) {
+  // Hide folder picker for Android
+  const folderSection = document.querySelector('#folder-picker-area');
+  if (folderSection) {
+    folderSection.innerHTML = `
+      <div style="text-align:center;padding:20px;">
+        <div style="font-size:2rem;margin-bottom:10px;">📱</div>
+        <p style="font-size:0.9rem;color:var(--text);font-weight:600;margin-bottom:8px;">
+          Auto Storage Enabled
+        </p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;">
+          All data is automatically saved to app storage:<br>
+          • Billing history<br>
+          • Medicine catalogue<br>
+          • Customer directory<br>
+          • Activity logs
+        </p>
+        <p style="font-size:0.75rem;color:var(--primary);margin-top:12px;font-weight:500;" id="android-storage-path">
+          ✓ Data is stored locally on your device
+        </p>
+      </div>
+    `;
+    if (typeof Android !== 'undefined' && Android.getAppStoragePath) {
+      setTimeout(() => {
+        const pathEl = document.getElementById('android-storage-path');
+        if (pathEl) {
+          pathEl.innerHTML = '✓ Data is stored at:<br><strong style="color:var(--text);font-size:0.75rem;word-break:break-all;">' + Android.getAppStoragePath() + '</strong>';
+        }
+      }, 50);
+    }
+  }
+  addLog('Auto storage initialized for Android');
+}
+
 // ── TABS ────────────────────────────────────────────────────────────────────
-const ALL_TABS = ['billing','history','dashboard','configure','settings'];
+const ALL_TABS = ['home','billing','history','dashboard','configure','settings'];
 
 function showTab(t) {
+  document.body.classList.toggle('on-home', t === 'home');
   ALL_TABS.forEach(n => {
     const el = document.getElementById('tab-'+n);
     if (el) el.classList.toggle('active', n === t);
@@ -718,6 +891,52 @@ function showTab(t) {
   if (t === 'history') { renderHistory(); renderLog(); }
   if (t === 'dashboard') renderDashboard();
   if (t === 'configure') { renderMedicineList(); renderTemplatePreview(); renderCustomerList(); }
+}
+
+// ── HOME BANNERS ─────────────────────────────────────────────────────────────
+const heroBanners = [
+  { emoji: '🦷', tag: 'Dental Week', title: 'Flat 10% off on dental care', text: 'ShyNM Paste, Hexigel & Betadine Gargle at special prices.', bg: 'linear-gradient(135deg, #1a6b3c 0%, #2d9b5f 100%)' },
+  { emoji: '🤒', tag: 'Fever & Pain', title: 'Relief starting at just ₹25', text: 'Dolo 650, Ketorol DT & Aldigesic SP always in stock.', bg: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)' },
+  { emoji: '🛵', tag: 'Triplicane', title: 'Free home delivery nearby', text: 'Call 7299999392 to order from Wilfred Madinaa Medicals.', bg: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)' }
+];
+let heroIndex = 0;
+let heroTimer = null;
+
+function initHero() {
+  // Shuffle the banner order on each launch
+  const order = heroBanners.slice().sort(() => Math.random() - 0.5);
+  document.getElementById('hero-track').innerHTML = order.map(b => `
+    <div class="hero-slide" style="background:${b.bg}">
+      <div class="hero-emoji">${b.emoji}</div>
+      <div>
+        <span class="hero-tag">${escHtml(b.tag)}</span>
+        <h2>${escHtml(b.title)}</h2>
+        <p>${escHtml(b.text)}</p>
+      </div>
+    </div>`).join('');
+  document.getElementById('hero-dots').innerHTML = order.map((_, i) =>
+    `<button class="hero-dot" onclick="goToBanner(${i})" aria-label="Banner ${i+1}"></button>`).join('');
+
+  // Swipe support
+  const hero = document.getElementById('hero');
+  let startX = null;
+  hero.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', e => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) goToBanner(heroIndex + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
+  goToBanner(0);
+}
+
+function goToBanner(i) {
+  const n = heroBanners.length;
+  heroIndex = (i + n) % n;
+  document.getElementById('hero-track').style.transform = `translateX(-${heroIndex * 100}%)`;
+  document.querySelectorAll('.hero-dot').forEach((d, j) => d.classList.toggle('active', j === heroIndex));
+  clearInterval(heroTimer);
+  heroTimer = setInterval(() => goToBanner(heroIndex + 1), 4000);
 }
 
 // ── ITEMS ────────────────────────────────────────────────────────────────────
@@ -852,14 +1071,25 @@ function generateBill() {
 // ── PRINT ────────────────────────────────────────────────────────────────────
 function printBill() {
   if (!currentBillData) return;
-  const { billTo, date } = currentBillData;
+  
+  const { billTo, date, invoiceNo } = currentBillData;
   const safeName = billTo.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
   const d = date ? date.split('-') : ['','',''];
-  const filename = `${safeName}_${d[2] || ''}_${d[1] || ''}_${(d[0] || '').slice(-2)}`;
-  const prevTitle = document.title;
-  document.title = filename;
-  window.print();
-  setTimeout(() => { document.title = prevTitle; }, 2000);
+  const filename = `Bill_${invoiceNo}_${safeName}_${d[2]}_${d[1]}_${d[0].slice(-2)}`;
+  
+  // Check if Android interface is available
+  if (typeof Android !== 'undefined' && Android.printDocument) {
+    // Use Android native print
+    Android.printDocument(filename);
+    addLog(`Print initiated: ${filename}`);
+  } else {
+    // Fallback for web browsers
+    const prevTitle = document.title;
+    document.title = filename;
+    window.print();
+    setTimeout(() => { document.title = prevTitle; }, 2000);
+    addLog(`Printed bill #${invoiceNo}`);
+  }
 }
 
 // ── SAVE BILL ────────────────────────────────────────────────────────────────
@@ -876,7 +1106,20 @@ function saveBill() {
   document.getElementById('invoice-no').value = (parseInt(data.invoiceNo) || 0) + 1;
   if (document.getElementById('tab-history').classList.contains('active')) renderHistory();
   if (document.getElementById('tab-dashboard').classList.contains('active')) renderDashboard();
-  toast('✅ Bill saved!');
+  
+  // Show toast with Android interface if available
+  if (typeof Android !== 'undefined' && Android.showToast) {
+    Android.showToast('✅ Bill saved! Tap Print to save as PDF');
+  } else {
+    toast('✅ Bill saved!');
+  }
+  
+  // Auto-trigger print for PDF save
+  setTimeout(() => {
+    if (confirm('Save this bill as PDF?')) {
+      printBill();
+    }
+  }, 500);
 }
 
 // ── RESET ────────────────────────────────────────────────────────────────────
@@ -995,6 +1238,9 @@ function renderTemplatePreview() {
   const box = document.getElementById('tpl-preview-box');
   if (!box) return;
   box.innerHTML = `
+    <div style="text-align:left;margin-bottom:8px;">
+      <img src="wmm-logo.png" alt="Logo" style="height:45px;width:auto;display:inline-block;" onerror="this.style.display='none'">
+    </div>
     <div class="tpl-shop-name">${escHtml(t.name)}</div>
     <div class="tpl-addr">${escHtml(t.addr1)}, ${escHtml(t.addr2)}<br>📞 ${escHtml(t.phone)}</div>
     <div class="tpl-badge">${escHtml(t.badge || 'TAX INVOICE')}</div>
@@ -1150,13 +1396,27 @@ function importMedicines(event) {
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('Invalid format');
-      medicines = data.filter(m => m.name); saveMedicines(); renderMedicineList();
+      let data = JSON.parse(e.target.result);
+      // Handle both array and object formats
+      if (!Array.isArray(data)) {
+        if (data.medicines && Array.isArray(data.medicines)) {
+          data = data.medicines;
+        } else {
+          throw new Error('Invalid format');
+        }
+      }
+      medicines = data.filter(m => m.name && m.price !== undefined);
+      saveMedicines(); renderMedicineList();
       toast('✅ ' + medicines.length + ' medicines imported!');
-    } catch { alert('Invalid JSON file.'); }
+      addLog('Imported ' + medicines.length + ' medicines');
+    } catch (err) { 
+      alert('Invalid JSON file.\n\nExpected format:\n[\n  {"name": "Medicine Name", "price": 100},\n  ...\n]'); 
+      console.error('Import error:', err);
+    }
   };
-  reader.readAsText(file); event.target.value = '';
+  reader.onerror = () => alert('Failed to read file');
+  reader.readAsText(file); 
+  event.target.value = '';
 }
 
 // ── CUSTOMER DIRECTORY ────────────────────────────────────────────────────────
@@ -1246,14 +1506,27 @@ function importCustomers(event) {
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('Invalid format');
-      customers = data.filter(c => c.name); saveCustomers(); renderCustomerList();
+      let data = JSON.parse(e.target.result);
+      // Handle both array and object formats
+      if (!Array.isArray(data)) {
+        if (data.customers && Array.isArray(data.customers)) {
+          data = data.customers;
+        } else {
+          throw new Error('Invalid format');
+        }
+      }
+      customers = data.filter(c => c.name);
+      saveCustomers(); renderCustomerList();
       addLog(`Imported ${customers.length} customers from file`);
       toast('✅ ' + customers.length + ' customers imported!');
-    } catch { alert('Invalid JSON file.'); }
+    } catch (err) { 
+      alert('Invalid JSON file.\n\nExpected format:\n[\n  {"name": "Customer Name", "phone": "123", "address": "..."},\n  ...\n]'); 
+      console.error('Import error:', err);
+    }
   };
-  reader.readAsText(file); event.target.value = '';
+  reader.onerror = () => alert('Failed to read file');
+  reader.readAsText(file); 
+  event.target.value = '';
 }
 
 // ── BILL-TO AUTOCOMPLETE ──────────────────────────────────────────────────────
@@ -1299,7 +1572,14 @@ function onBillToKey(e) {
 
 // ── SETTINGS / FOLDER ─────────────────────────────────────────────────────────
 async function pickFolder() {
-  if (!window.showDirectoryPicker) { alert('Your browser does not support folder selection.\nPlease use Chrome or Edge.'); return; }
+  // Check if running in Android WebView
+  const isAndroid = /Android/i.test(navigator.userAgent) && typeof Android !== 'undefined';
+  
+  if (isAndroid || !window.showDirectoryPicker) { 
+    alert('Folder selection is not available in mobile app.\nData is automatically saved to app storage.'); 
+    return; 
+  }
+  
   try {
     dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
     await saveHandleToIDB(dirHandle);
@@ -1408,6 +1688,9 @@ function toWords(n) {
   if (n<10000000) return toWords(Math.floor(n/100000))+' Lakh'+(n%100000?' '+toWords(n%100000):'');
   return toWords(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+toWords(n%10000000):'');
 }
+
+initHero();
 </script>
 </body>
 </html>
+

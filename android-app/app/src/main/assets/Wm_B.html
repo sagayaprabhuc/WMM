@@ -345,6 +345,28 @@ input::placeholder { color: #d1d5db; }
 .add-form-box .add-form-title { font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 .add-form-grid { display: grid; grid-template-columns: 1fr 90px; gap: 8px; align-items: end; }
 
+/* ── HOME / LANDING ── */
+body.on-home .bottom-nav { display: none; }
+body.on-home .app-content { padding-bottom: 16px; }
+.hero { position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: 18px; touch-action: pan-y; }
+.hero-track { display: flex; transition: transform 0.5s ease; }
+.hero-slide { flex: 0 0 100%; min-height: 160px; padding: 20px 18px 30px; color: white; display: flex; align-items: center; gap: 14px; }
+.hero-slide .hero-emoji { font-size: 3rem; line-height: 1; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+.hero-slide .hero-tag { display: inline-block; background: rgba(255,255,255,0.22); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
+.hero-slide h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; line-height: 1.25; margin-bottom: 4px; }
+.hero-slide p { font-size: 0.78rem; opacity: 0.92; line-height: 1.45; }
+.hero-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+.hero-dot { width: 7px; height: 7px; border-radius: 4px; border: none; padding: 0; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.25s; }
+.hero-dot.active { width: 20px; background: white; }
+.new-order-btn { width: 100%; padding: 15px 18px; font-size: 1rem; border-radius: var(--radius); box-shadow: 0 4px 16px rgba(26,107,60,0.35); margin-bottom: 22px; }
+.category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.category-tile { aspect-ratio: 1 / 1; background: white; border: none; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; cursor: pointer; font-family: 'Inter', sans-serif; transition: transform 0.15s; }
+.category-tile:active { transform: scale(0.97); }
+.category-tile .cat-emoji { font-size: 2.4rem; width: 64px; height: 64px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; }
+.category-tile .cat-name { font-size: 0.88rem; font-weight: 600; color: var(--text); text-align: center; }
+.category-tile .cat-sub { font-size: 0.7rem; color: var(--text-secondary); text-align: center; }
+.back-home-btn { margin-bottom: 12px; }
+
 /* ── PRINT ── */
 @media print {
   @page { margin: 10mm; size: A4; }
@@ -356,7 +378,7 @@ input::placeholder { color: #d1d5db; }
 }
 </style>
 </head>
-<body>
+<body class="on-home">
 <div class="app">
   <!-- HEADER -->
   <header class="app-header">
@@ -371,8 +393,43 @@ input::placeholder { color: #d1d5db; }
   <!-- SCROLLABLE CONTENT -->
   <div class="app-content" id="app-content">
 
+    <!-- HOME TAB -->
+    <div class="tab-page active" id="tab-home">
+      <div class="hero" id="hero">
+        <div class="hero-track" id="hero-track"><!-- rendered by JS --></div>
+        <div class="hero-dots" id="hero-dots"></div>
+      </div>
+
+      <button class="btn btn-primary new-order-btn" onclick="showTab('billing')">🛒 New Order</button>
+
+      <div class="section-label">Shop by Category</div>
+      <div class="category-grid">
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">💊</span>
+          <span class="cat-name">Medicines</span>
+          <span class="cat-sub">Tablets &amp; capsules</span>
+        </button>
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">🦷</span>
+          <span class="cat-name">Dental Care</span>
+          <span class="cat-sub">Pastes, gels &amp; gargles</span>
+        </button>
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">💉</span>
+          <span class="cat-name">Injections</span>
+          <span class="cat-sub">Clinic supplies</span>
+        </button>
+        <button class="category-tile" onclick="showTab('billing')">
+          <span class="cat-emoji">❤️</span>
+          <span class="cat-name">BP &amp; Heart</span>
+          <span class="cat-sub">Daily care</span>
+        </button>
+      </div>
+    </div>
+
     <!-- BILLING TAB -->
-    <div class="tab-page active" id="tab-billing">
+    <div class="tab-page" id="tab-billing">
+      <button class="btn btn-ghost btn-sm back-home-btn" onclick="showTab('home')">← Back to Home</button>
       <div class="card">
         <div class="card-header">
           <div class="card-title">🧾 Bill Details</div>
@@ -817,9 +874,10 @@ if (isAndroid) {
 }
 
 // ── TABS ────────────────────────────────────────────────────────────────────
-const ALL_TABS = ['billing','history','dashboard','configure','settings'];
+const ALL_TABS = ['home','billing','history','dashboard','configure','settings'];
 
 function showTab(t) {
+  document.body.classList.toggle('on-home', t === 'home');
   ALL_TABS.forEach(n => {
     const el = document.getElementById('tab-'+n);
     if (el) el.classList.toggle('active', n === t);
@@ -833,6 +891,52 @@ function showTab(t) {
   if (t === 'history') { renderHistory(); renderLog(); }
   if (t === 'dashboard') renderDashboard();
   if (t === 'configure') { renderMedicineList(); renderTemplatePreview(); renderCustomerList(); }
+}
+
+// ── HOME BANNERS ─────────────────────────────────────────────────────────────
+const heroBanners = [
+  { emoji: '🦷', tag: 'Dental Week', title: 'Flat 10% off on dental care', text: 'ShyNM Paste, Hexigel & Betadine Gargle at special prices.', bg: 'linear-gradient(135deg, #1a6b3c 0%, #2d9b5f 100%)' },
+  { emoji: '🤒', tag: 'Fever & Pain', title: 'Relief starting at just ₹25', text: 'Dolo 650, Ketorol DT & Aldigesic SP always in stock.', bg: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)' },
+  { emoji: '🛵', tag: 'Triplicane', title: 'Free home delivery nearby', text: 'Call 7299999392 to order from Wilfred Madinaa Medicals.', bg: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)' }
+];
+let heroIndex = 0;
+let heroTimer = null;
+
+function initHero() {
+  // Shuffle the banner order on each launch
+  const order = heroBanners.slice().sort(() => Math.random() - 0.5);
+  document.getElementById('hero-track').innerHTML = order.map(b => `
+    <div class="hero-slide" style="background:${b.bg}">
+      <div class="hero-emoji">${b.emoji}</div>
+      <div>
+        <span class="hero-tag">${escHtml(b.tag)}</span>
+        <h2>${escHtml(b.title)}</h2>
+        <p>${escHtml(b.text)}</p>
+      </div>
+    </div>`).join('');
+  document.getElementById('hero-dots').innerHTML = order.map((_, i) =>
+    `<button class="hero-dot" onclick="goToBanner(${i})" aria-label="Banner ${i+1}"></button>`).join('');
+
+  // Swipe support
+  const hero = document.getElementById('hero');
+  let startX = null;
+  hero.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', e => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) goToBanner(heroIndex + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
+  goToBanner(0);
+}
+
+function goToBanner(i) {
+  const n = heroBanners.length;
+  heroIndex = (i + n) % n;
+  document.getElementById('hero-track').style.transform = `translateX(-${heroIndex * 100}%)`;
+  document.querySelectorAll('.hero-dot').forEach((d, j) => d.classList.toggle('active', j === heroIndex));
+  clearInterval(heroTimer);
+  heroTimer = setInterval(() => goToBanner(heroIndex + 1), 4000);
 }
 
 // ── ITEMS ────────────────────────────────────────────────────────────────────
@@ -1584,6 +1688,8 @@ function toWords(n) {
   if (n<10000000) return toWords(Math.floor(n/100000))+' Lakh'+(n%100000?' '+toWords(n%100000):'');
   return toWords(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+toWords(n%10000000):'');
 }
+
+initHero();
 </script>
 </body>
 </html>
